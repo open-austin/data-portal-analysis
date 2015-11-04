@@ -4,7 +4,7 @@ There's a lot of content on the City of Austin's open data portal. This project 
 
 ## Current project goals
 
-Write code that grabs specific pieces of information from Austin's public data portal and rearrange it into a format that's useful for analysis. 
+Write code that grabs specific pieces of information from Austin's public data portal and rearranges it into a format that's useful for analysis. 
 
 Next goals include automated publishing to the City's data portal, so everyone can access and analyze this data.
 
@@ -26,11 +26,11 @@ Table grain... How often are we publishing aggregate information (subtotals and 
 
 When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the following:
 
-* The content I am contributing was either created by me or by someone who gave me permission to reuse their content.
+* The content I am contributing was either created by me or by someone who gave me appropriate permission to reuse their content.
 
 * I agree that contributions to this project constitute software development. 
 
-* I agree to dedicate any and all copyright interest in this software to the public domain, and I've reviewed and agree to the concepts described by this project's [unlicense](http://unlicense.org).
+* I agree to dedicate any and all copyright interest in this software to the public domain, and I've reviewed and agree to the concepts described by this project's [unlicense](https://github.com/open-austin/data-portal-analysis/blob/start-meta-files/LICENSE.md).
 
 ## How to contribute
 
@@ -54,4 +54,4 @@ Coming soon.
 
 ## License
 
-Unlicense. (Link to be delivered.)
+[Unlicense](https://github.com/open-austin/data-portal-analysis/blob/start-meta-files/LICENSE.md)
