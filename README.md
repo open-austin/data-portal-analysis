@@ -24,7 +24,7 @@ Table grain... How often are we publishing aggregate information (subtotals and 
 
 ## Contributing terms
 
-When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the terms [here](https://github.com/open-austin/data-portal-analysis/blob/start-meta-files/CONTRIBUTING.md).
+When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the terms [here](https://github.com/open-austin/data-portal-analysis/blob/master/CONTRIBUTING.md).
 
 ## How to contribute
 
@@ -48,4 +48,4 @@ Coming soon.
 
 ## License
 
-[Unlicense](https://github.com/open-austin/data-portal-analysis/blob/start-meta-files/LICENSE.md)
+[Unlicense](https://github.com/open-austin/data-portal-analysis/blob/master/LICENSE.md)
