@@ -4,4 +4,4 @@ When you contribute to this project, you are sharing and/or creating content. Pl
 
 * I agree that contributions to this project constitute software development. 
 
-* I agree to dedicate any and all copyright interest in this software to the public domain, and I've reviewed and agree to the concepts described by this project's [unlicense](https://github.com/open-austin/data-portal-analysis/blob/start-meta-files/LICENSE.md).
+* I agree to dedicate any and all copyright interest in this software to the public domain, and I've reviewed and agree to the concepts described by this project's [unlicense](https://github.com/open-austin/data-portal-analysis/blob/master/LICENSE.md).
