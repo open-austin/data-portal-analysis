@@ -40,9 +40,7 @@ class DatasetAnalyzer():
             current_row.append(col['tableColumnId'])
             current_row.append(col['dataTypeName'])
             current_row.append(col['renderTypeName'])
-            current_row.append(self._get_null_count(col))
-            current_row.append(self._get_non_null_count(col))
-            current_row.append(self._get_top(col))
+            current_row += self._get_cached_contents(col)
             current_row.append(dataset_time)
             current_row.append("IS_CURRENT")         # placeholder
             rows.append(current_row)
@@ -71,38 +69,34 @@ class DatasetAnalyzer():
             dpt = "No Department Information"
         return dpt.encode('utf-8')
 
-    def _get_null_count(self, col):
-        try:
-            total = col['cachedContents']['null']
-        except:
-            total = "null"
-        return total
-
-    def _get_non_null_count(self, col):
-        try:
-            total = col['cachedContents']['non_null']
-        except:
-            total = "null"
-        return total
-
-    def _get_top(self, col):
-        """This gets the top item from cachedContents.
-        Currently the item is returned as a python representation,
-        which is less than ideal, but it works.
-
+    def _get_cached_contents(self, col):
+        """This function retrieves information from columns
+        that have a section for cached contents.
         """
+        return_list = []
         try:
-            top = col['cachedContents']['top'][0]['item']
+            cached = col['cachedContents']
+            return_list.append(cached['null'])
+            return_list.append(cached['non_null'])
         except:
-            top = "null"
+            return_list.append('null')
+            return_list.append('null')
+        try:
+            top = col['cachedContents']['top']
+            item = top[0]['item']
+            if col['dataTypeName'] == 'url':
+                try:
+                    item = item['url'].encode('utf-8')
+                except:
+                    item = item['description'].encode('utf-8')
+            if col['dataTypeName'] == 'location':
+                item = item['human_address']['address'].encode('utf-8')
+            item = item.encode('utf-8')
+        except:
+            item = 'null'
 
-        if col['dataTypeName'] == 'url':
-            try:
-                top = top['url']
-            except:
-                top = "null"
-
-        return str(repr(top))
+        return_list.append(item)
+        return return_list
 
     def _get_date_time(self, dataset):
         try:
