@@ -10,7 +10,7 @@ class DatasetAnalyzer():
         with open(json_filename) as data_json:
             json_str = data_json.read()
             data_dict = json.loads(json_str)
-        self._datasets = data_dict['datasets']  # This will need to change
+        self._datasets = self._multiset_handler(data_dict)
 
         self._headers = ["id", "soc_resource_id", "dept",
                          "name", "col_position", "col_name", "col_field_name",
@@ -21,6 +21,16 @@ class DatasetAnalyzer():
 
         self._rows = self._analyze_all()
 
+
+    def _multiset_handler(self, data_dict):
+        try:
+            datasets = data_dict['datasets']
+        except(KeyError):
+            datasets = [data_dict]
+        except:
+            print "Error accessing dataset JSON object"
+        return datasets
+            
     def _analyze_dataset(self, dataset):
         """Analyze a dataset (dict) and return a list of rows.
         """
@@ -41,7 +51,7 @@ class DatasetAnalyzer():
             current_row.append(col['renderTypeName'])
             current_row += self._get_cached_contents(col)
             current_row.append(dataset_time)
-            current_row.append("IS_CURRENT")         # placeholder
+            current_row.append(u"IS_CURRENT")         # placeholder
 
             encoded_row = []      # csv module doesn't like unicode
             for item in current_row:
@@ -127,5 +137,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         outfile = sys.argv[2]
 
-    Analyzer = DatasetAnalyzer(datafile)
     Analyzer.make_csv(outfile)
