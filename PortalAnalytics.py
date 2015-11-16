@@ -24,17 +24,16 @@ class DatasetAnalyzer():
     def _analyze_dataset(self, dataset):
         """Analyze a dataset (dict) and return a list of rows.
         """
-        # TODO find a cleaner way to deal with encoding issues
         rows = []
         dataset_id = dataset['id']
-        dataset_name = dataset['name'].encode('utf-8')
+        dataset_name = dataset['name']
         dataset_dpt = self._get_department(dataset)
         dataset_time = self._get_date_time(dataset)
 
         for col in dataset['columns']:
             current_row = [dataset_id, dataset_dpt, dataset_name]
             current_row.append(col['position'])
-            current_row.append(col['name'].encode('utf-8'))
+            current_row.append(col['name'])
             current_row.append(col['fieldName'])
             current_row.append(col['id'])
             current_row.append(col['tableColumnId'])
@@ -43,7 +42,14 @@ class DatasetAnalyzer():
             current_row += self._get_cached_contents(col)
             current_row.append(dataset_time)
             current_row.append("IS_CURRENT")         # placeholder
-            rows.append(current_row)
+
+            encoded_row = []      # csv module doesn't like unicode
+            for item in current_row:
+                if isinstance(item, unicode):
+                    item = item.encode('utf-8')
+                encoded_row.append(item)
+
+            rows.append(encoded_row)
 
         return rows
 
@@ -86,12 +92,11 @@ class DatasetAnalyzer():
             item = top[0]['item']
             if col['dataTypeName'] == 'url':
                 try:
-                    item = item['url'].encode('utf-8')
+                    item = item['url']
                 except:
-                    item = item['description'].encode('utf-8')
+                    item = item['description']
             if col['dataTypeName'] == 'location':
-                item = item['human_address']['address'].encode('utf-8')
-            item = item.encode('utf-8')
+                item = item['human_address']['address']
         except:
             item = 'null'
 
