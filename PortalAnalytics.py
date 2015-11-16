@@ -1,11 +1,20 @@
+"""Extract information from Austin's datasets.
+
+Script usage:
+
+    $ python PortalAnalytics.py <input_file> <destination_file>
+
+"""
+
 import json
 import csv
 import sys
+import datetime
 
 
-class DatasetAnalyzer():
+class DatasetAnalyzer:
     def __init__(self, json_filename):
-        """Initialize a Dataset Analyzer object.
+        """Initialize a Dataset Analyzer.
         """
         with open(json_filename) as data_json:
             json_str = data_json.read()
@@ -17,8 +26,10 @@ class DatasetAnalyzer():
                          "soc_id", "soc_table_column_id",
                          "soc_data_type_name", "soc_render_type_name",
                          "num_null", "num_not_null", "ex_value",
-                         "snapshot_date_time", "is_current"]
+                         "snapshot_date_time", "is_current",
+                         "report_creation_time"]
 
+        self._creation_time = datetime.datetime.now().isoformat()
         self._rows = self._analyze_all()
 
 
@@ -28,20 +39,19 @@ class DatasetAnalyzer():
         except(KeyError):
             datasets = [data_dict]
         except:
-            print "Error accessing dataset JSON object"
+            raise KeyError("Error accessing dataset JSON object")
         return datasets
             
     def _analyze_dataset(self, dataset):
         """Analyze a dataset (dict) and return a list of rows.
         """
         rows = []
-        dataset_id = dataset['id']
-        dataset_name = dataset['name']
-        dataset_dpt = self._get_department(dataset)
+        
         dataset_time = self._get_date_time(dataset)
-
+        dataset_info = self._get_dataset_info(dataset)
         for col in dataset['columns']:
-            current_row = [dataset_id, dataset_dpt, dataset_name]
+            current_row = []
+            current_row += dataset_info
             current_row.append(col['position'])
             current_row.append(col['name'])
             current_row.append(col['fieldName'])
@@ -52,7 +62,7 @@ class DatasetAnalyzer():
             current_row += self._get_cached_contents(col)
             current_row.append(dataset_time)
             current_row.append(u"IS_CURRENT")         # placeholder
-
+            current_row.append(self._creation_time)
             encoded_row = []      # csv module doesn't like unicode
             for item in current_row:
                 if isinstance(item, unicode):
@@ -67,24 +77,25 @@ class DatasetAnalyzer():
         """Run the analyzer on all datasets and return the results.
         """
         results = []
-        rows = []
-        results.append(self._headers)
         for item in self._datasets:
             for row in self._analyze_dataset(item):
-                rows.append(row)
-        for number, row in enumerate(rows):
-            results.append([number+1] + row)
+                results.append(row)
         return results
 
-    def _get_department(self, dataset):
+    def _get_dataset_info(self, dataset):
+        """Returns information about the dataset as a list.
+        """
+        dataset_id = dataset['id']
+        dataset_name = dataset['name']
         try:
             custom = dataset['metadata']['custom_fields']
-            dpt = custom['Additional Information']['Department']
+            dataset_dpt = custom['Additional Information']['Department']
         except:
             # print dataset['name']
-            dpt = "No Department Information"
-        return dpt.encode('utf-8')
+            dataset_dpt = "No Department Information"
 
+        return [dataset_id, dataset_name, dataset_dpt]
+        
     def _get_cached_contents(self, col):
         """This function retrieves information from columns
         that have a section for cached contents.
@@ -114,6 +125,8 @@ class DatasetAnalyzer():
         return return_list
 
     def _get_date_time(self, dataset):
+        """This function fills the snapshot_date_time column.
+        """
         try:
             date = dataset['publicationDate']
         except:
@@ -123,18 +136,17 @@ class DatasetAnalyzer():
     def make_csv(self, filename):
         with open(filename, "wb") as outfile:
             writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL)
-            for row in self._rows:
-                writer.writerow(row)
+            writer.writerow(self._headers)
+            for number, row in enumerate(self._rows):
+                writer.writerow([number+1]+row)
 
 
 if __name__ == "__main__":
-    """USAGE: python PortalAnalytics.py <input file> <output file>
-    """
-    datafile = "datasets.json"
-    outfile = "out.csv"
-    if len(sys.argv) > 1:
-        datafile = sys.argv[1]
-    if len(sys.argv) > 2:
-        outfile = sys.argv[2]
+    docstring = """USAGE: python PortalAnalytics.py <input_file> <output_file="out.csv"> """
+    if len(sys.argv) < 3:
+        sys.exit(docstring)
+    datafile = sys.argv[1]
+    outfile = sys.argv[2]
 
+    Analyzer = DatasetAnalyzer(datafile)
     Analyzer.make_csv(outfile)
