@@ -12,14 +12,43 @@ import sys
 import datetime
 
 
-class DatasetAnalyzer:
+class DatasetHandler:
+    """ class DatasetHandler(json_filename)
+    Prepares dtasets for analysis.
+    """
     def __init__(self, json_filename):
-        """Initialize a Dataset Analyzer.
-        """
+        self._current_time = datetime.datetime.now().replace(microsecond=0)
+        dataset_dict = self._load_json(json_filename)
+        self._datasets = self._multiset_handler(dataset_dict)
+
+    def _load_json(self, json_filename):
         with open(json_filename) as data_json:
             json_str = data_json.read()
             data_dict = json.loads(json_str)
-        self._datasets = self._multiset_handler(data_dict)
+        return data_dict
+
+    def _multiset_handler(self, data_dict):
+        try:
+            datasets = data_dict['datasets']
+        except(KeyError):
+            datasets = [data_dict]
+        except:
+            raise KeyError("Error accessing dataset JSON object")
+
+        for item in datasets:
+            item['snapshot_time'] = self._current_time.isoformat()
+        return datasets
+
+    def get_all(self):
+        return self._datasets
+
+
+class DatasetAnalyzer:
+    def __init__(self, dataset_list):
+        """class DatasetAnalyzer([dataset_list])
+        Analyzes a list of datasets and creates a CSV file with the results.
+        """
+        self._datasets = dataset_list
 
         self._headers = ["id", "soc_resource_id", "dept",
                          "name", "col_position", "col_name", "col_field_name",
@@ -29,29 +58,19 @@ class DatasetAnalyzer:
                          "snapshot_date_time", "is_current",
                          "report_creation_time"]
 
-        self._creation_time = datetime.datetime.now().isoformat()
+        current_time = datetime.datetime.now()
+        self._creation_time = current_time.replace(microsecond=0).isoformat()
         self._rows = self._analyze_all()
 
-
-    def _multiset_handler(self, data_dict):
-        try:
-            datasets = data_dict['datasets']
-        except(KeyError):
-            datasets = [data_dict]
-        except:
-            raise KeyError("Error accessing dataset JSON object")
-        return datasets
-            
     def _analyze_dataset(self, dataset):
         """Analyze a dataset (dict) and return a list of rows.
         """
         rows = []
-        
         dataset_time = self._get_date_time(dataset)
         dataset_info = self._get_dataset_info(dataset)
         for col in dataset['columns']:
             current_row = []
-            current_row += dataset_info
+            current_row.extend(dataset_info)
             current_row.append(col['position'])
             current_row.append(col['name'])
             current_row.append(col['fieldName'])
@@ -95,7 +114,7 @@ class DatasetAnalyzer:
             dataset_dpt = "No Department Information"
 
         return [dataset_id, dataset_name, dataset_dpt]
-        
+    
     def _get_cached_contents(self, col):
         """This function retrieves information from columns
         that have a section for cached contents.
@@ -128,8 +147,8 @@ class DatasetAnalyzer:
         """This function fills the snapshot_date_time column.
         """
         try:
-            date = dataset['publicationDate']
-        except:
+            date = dataset['snapshot_time']
+        except(KeyError):
             date = "null"
         return date
 
@@ -142,11 +161,13 @@ class DatasetAnalyzer:
 
 
 if __name__ == "__main__":
-    docstring = """USAGE: python PortalAnalytics.py <input_file> <output_file="out.csv"> """
+    docstring = """USAGE: python PortalAnalytics.py <input_file> <output_file>
+    """
     if len(sys.argv) < 3:
         sys.exit(docstring)
     datafile = sys.argv[1]
     outfile = sys.argv[2]
 
-    Analyzer = DatasetAnalyzer(datafile)
+    Handler = DatasetHandler(datafile)
+    Analyzer = DatasetAnalyzer(Handler.get_all())
     Analyzer.make_csv(outfile)
