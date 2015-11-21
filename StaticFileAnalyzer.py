@@ -11,7 +11,6 @@ user@host: python StaticFileAnalyzer.py <input_file> <destination_file>
 import sys
 import utils
 
-
 if __name__ == "__main__":
     docstring = """USAGE: python StaticFileAnalyzer.py <input_file> <output_file>
     """
@@ -23,6 +22,7 @@ if __name__ == "__main__":
     Reader = utils.JsonFileReader(datafile)
     datasets = Reader.get_all_datasets()
     Analyzer = utils.DatasetAnalyzer()
+
     for item in datasets:
         Analyzer.add_dataset(item)
     Analyzer.make_csv(outfile)
