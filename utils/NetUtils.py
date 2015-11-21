@@ -4,6 +4,13 @@
 import requests
 import logging
 
+class SocIdGetter:
+    def __init__(self):
+        self._request_url = "http://data.austintexas.gov/search/views.json"
+
+    def get_all_ids():
+        
+        
 class ViewRequestHandler:
     def __init__(self):
         self._request_url = "http://data.austintexas.gov/views/"
@@ -14,10 +21,11 @@ class ViewRequestHandler:
             result = requests.get(request_url)
         except:
             logging.critical("Can't get data from %s" % request_url)
+            return "null"
         if 'error' in result.json().keys():
             logging.critical("Error getting data from %s message: %s"
                              % (request_url, result.json()['message']))
-            return "error"
-
+            return "null"
+        print result
         logging.info("Got data from %s" % request_url)
         return result.json()
