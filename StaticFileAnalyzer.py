@@ -1,14 +1,16 @@
 #! /usr/env/python
-"""Extract information from a file containing datasets as JSON objects.
+"""Extracts information from a file containing datasets as JSON objects, 
+then creates a CSV file containing the results.
 
-Script usage:
-
-    $ python StaticFileAnalyzer.py <input_file> <destination_file>
+Script usage
+------------
+user@host: python StaticFileAnalyzer.py <input_file> <destination_file>
 
 """
 
 import sys
-import utils.PortalUtils as utils
+import utils.PortalUtils as PortalUtils
+import utils.FileUtils as FileUtils
 
 if __name__ == "__main__":
     docstring = """USAGE: python StaticFileAnalyzer.py <input_file> <output_file>
@@ -18,9 +20,9 @@ if __name__ == "__main__":
     datafile = sys.argv[1]
     outfile = sys.argv[2]
 
-    Handler = utils.JsonFileHandler(datafile)
-    datasets = Handler.get_all()
-    Analyzer = utils.DatasetAnalyzer()
+    Reader = FileUtils.JsonFileReader(datafile)
+    datasets = Reader.get_all_datasets()
+    Analyzer = PortalUtils.DatasetAnalyzer()
     for item in datasets:
         Analyzer.add_dataset(item)
     Analyzer.make_csv(outfile)
