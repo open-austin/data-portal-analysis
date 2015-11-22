@@ -10,8 +10,8 @@ logging.getLogger()
 
 class SocIdGetter:
     def __init__(self):
-        self._views_url = "https://data.austintexas.gov/views"
-        self._migrations_api = "https://data.austintexas.gov/api/migrations/"
+        self._views_url = "http://data.austintexas.gov/views"
+        self._migrations_api = "http://data.austintexas.gov/api/migrations/"
         self._view_metadata = self.get_all_view_ids()
         self.soc_ids = self.filter_view_ids(self._view_metadata)
 
