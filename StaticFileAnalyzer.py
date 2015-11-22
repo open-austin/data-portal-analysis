@@ -8,7 +8,7 @@ user@host: python StaticFileAnalyzer.py <input_file> <destination_file>
 
 """
 import sys
-import utils
+import utilities
 import logging
 
 logging.basicConfig(filename="static_analyzer.log", filemode="w", level=logging.DEBUG)
@@ -22,9 +22,9 @@ if __name__ == "__main__":
     datafile = sys.argv[1]
     outfile = sys.argv[2]
 
-    Reader = utils.JsonFileReader(datafile)
+    Reader = utilities.JsonFileReader(datafile)
     datasets = Reader.get_all_datasets()
-    Analyzer = utils.DatasetAnalyzer()
+    Analyzer = utilities.DatasetAnalyzer()
 
     for item in datasets:
         Analyzer.add_dataset(item)

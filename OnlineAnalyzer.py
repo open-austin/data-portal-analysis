@@ -8,7 +8,7 @@ user@host: python OnlineAnalyzer.py <fourby_list> <destination_file>
 
 """
 import sys
-import utils
+import utilities
 import logging
 import re
 
@@ -28,8 +28,8 @@ if __name__ == "__main__":
     soc_ids = re.findall('[0-9a-z]{4}-[0-9a-z]{4}?', fours_file, re.DOTALL)
     for soc in soc_ids:
         print "soc:", soc
-    Requester = utils.ViewRequestHandler()
-    Analyzer = utils.DatasetAnalyzer()
+    Requester = utilities.ViewRequestHandler()
+    Analyzer = utilities.DatasetAnalyzer()
 
     for fourby in soc_ids:
         dataset = Requester.get_view(fourby)
