@@ -3,38 +3,40 @@
 
 import requests
 import logging
+import datetime
 
 logging.getLogger()
+
 
 class SocIdGetter:
     def __init__(self):
         self._views_url = "https://data.austintexas.gov/views"
         self._migrations_api = "https://data.austintexas.gov/api/migrations/"
         self._view_metadata = self.get_all_view_ids()
-        self._dataset_ids = self.filter_view_ids(self._view_metadata)
+        self.soc_ids = self.filter_view_ids(self._view_metadata)
 
     def get_all_view_ids(self):
         req = requests.get(self._views_url)
         views_response_json = req.json()
         view_metadata = []
-        for v in views_response_json:
+        for view in views_response_json:
             try:
-                display_type = v['displayType']
-            except(KeyError): # if v represents a data_lens page, we ignore it
+                display_type = view['displayType']
+            except(KeyError): # if view represents a data_lens page, we ignore it
                 continue
-            soc_id = v['id']
-            view_type = v['viewType']
-            display_type = v['displayType']
+            soc_id = view['id']
+            view_type = view['viewType']
+            display_type = view['displayType']
             item = [soc_id, view_type, display_type] # these attributes are used to filter out stuff we don't want
             view_metadata.append(item)
         return view_metadata    
 
     def filter_view_ids(self, view_metadata):
         dataset_ids = []
-        for v in view_metadata:
-            if v[1] == "tabular":
-                if v[2] == "table":
-                    dataset_ids.append(v)
+        for data_list in view_metadata:
+            if data_list[1] == "tabular":
+                if data_list[2] == "table":
+                    dataset_ids.append(data_list[0])
                 else:
                     continue
             else:
@@ -42,18 +44,20 @@ class SocIdGetter:
         return dataset_ids
 
     def filter_table_ids(self, dataset_ids):
-        soc_ids = [] # these will be the "new back end" ids of primary data assets (not derived views, etc)
-        for r in dataset_ids:
-            soc_id = r[0]
-            url = self._migrations_api + soc_id
+        fourby_list = [] # these will be the "new back end" ids of primary data assets (not derived views, etc)
+        for set_id in dataset_ids:
+            url = self._migrations_api + set_id
             req = requests.get(url)
             response_json = req.json()
             try:
-                i = response_json['nbeId']
+                new_id = response_json['nbeId']
             except(KeyError):
+                logging.info("%s is not a primary data asset."
+                             % set_id)
                 continue
-            soc_ids.append(i)
-        return soc_ids
+            else:
+                soc_ids.append(new_id)
+        return fourby_list
         
 class ViewRequestHandler:
     def __init__(self):
@@ -71,4 +75,9 @@ class ViewRequestHandler:
                              % (request_url, result.json()['message']))
             return "null"
         logging.info("Got data from %s" % request_url)
-        return result.json()
+
+        dataset = result.json()
+        cur_time = datetime.datetime.now().replace(microsecond=0)
+        dataset['snapshot_time'] = cur_time.isoformat()
+
+        return dataset
