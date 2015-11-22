@@ -26,6 +26,8 @@ Table grain... How often are we publishing aggregate information (subtotals and 
 
 When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the terms [here](https://github.com/open-austin/data-portal-analysis/blob/master/CONTRIBUTING.md).
 
+## See the [board for data-portal-analysis on waffle.io](https://waffle.io/open-austin/data-portal-analysis)
+
 ## How to contribute
 
 Additional guidelines forthcoming. In the meantime, please contribute by:
