@@ -4,7 +4,7 @@ then creates a CSV file containing the results.
 
 Script usage
 ------------
-user@host: python OnlineAnalyzer.py <fourby_list> <destination_file>
+user@host: python OnlineAnalyzer.py <destination_file>
 
 """
 import sys
@@ -16,23 +16,25 @@ logging.basicConfig(filename="online_analyzer.log", filemode="w", level=logging.
 
 
 if __name__ == "__main__":
-    docstring = """USAGE: python OnlineAnalyzer.py <fourby_list> <destination_file>
+    docstring = """USAGE: python OnlineAnalyzer.py  <destination_file>
     """
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         sys.exit(docstring)
-    datafile = sys.argv[1]
-    outfile = sys.argv[2]
+    outfile = sys.argv[1]
 
-    with open(datafile) as infile:
-        fours_file = infile.read()
-    soc_ids = re.findall('[0-9a-z]{4}-[0-9a-z]{4}?', fours_file, re.DOTALL)
-    for soc in soc_ids:
-        print "soc:", soc
-    Requester = utilities.ViewRequestHandler()
+    # with open(datafile) as infile:
+    #     fours_file = infile.read()
+    # soc_ids = re.findall('[0-9a-z]{4}-[0-9a-z]{4}?', fours_file, re.DOTALL)
+    # for soc in soc_ids:
+    #     print "soc:", soc
+
+    IdGetter = utilities.SocIdGetter()
+    soc_ids = IdGetter.soc_ids
+    ViewRequester = utilities.ViewRequestHandler()
     Analyzer = utilities.DatasetAnalyzer()
 
     for fourby in soc_ids:
-        dataset = Requester.get_view(fourby)
+        dataset = ViewRequester.get_view(fourby)
         print "Processing %s" % fourby
         if dataset == "null":
             continue
