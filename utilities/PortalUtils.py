@@ -1,3 +1,4 @@
+
 import csv
 import datetime
 import logging
@@ -12,9 +13,9 @@ class DatasetAnalyzer:
         """
         self._datasets = []
 
-        dataset_headers = ["id", "soc_resource_id", "dept",
+        dataset_headers = ["id", "soc_resource_id", "name", "dept",
                            "snapshot_date_time"]
-        column_headers = ["name", "col_position", "col_name", "col_field_name",
+        column_headers = ["col_position", "col_name", "col_field_name",
                           "soc_id", "soc_table_column_id",
                           "soc_data_type_name", "soc_render_type_name",
                           "num_null", "num_not_null", "ex_value"]
