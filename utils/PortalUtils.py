@@ -2,7 +2,7 @@ import csv
 import datetime
 import logging
 
-logging.basicConfig(filename="analyzer.log", filemode="w", level=logging.DEBUG)
+logging.getLogger()
 
 
 class DatasetAnalyzer:

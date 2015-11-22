@@ -3,6 +3,9 @@
 
 import json
 import datetime
+import logging
+
+logging.getLogger()
 
 
 class JsonFileReader:

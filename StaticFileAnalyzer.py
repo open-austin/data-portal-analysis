@@ -7,9 +7,12 @@ Script usage
 user@host: python StaticFileAnalyzer.py <input_file> <destination_file>
 
 """
-
 import sys
 import utils
+import logging
+
+logging.basicConfig(filename="static_analyzer.log", filemode="w", level=logging.DEBUG)
+
 
 if __name__ == "__main__":
     docstring = """USAGE: python StaticFileAnalyzer.py <input_file> <output_file>

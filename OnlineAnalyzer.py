@@ -7,10 +7,13 @@ Script usage
 user@host: python OnlineAnalyzer.py <fourby_list> <destination_file>
 
 """
-
 import sys
 import utils
 import logging
+import re
+
+logging.basicConfig(filename="online_analyzer.log", filemode="w", level=logging.DEBUG)
+
 
 if __name__ == "__main__":
     docstring = """USAGE: python OnlineAnalyzer.py <fourby_list> <destination_file>
@@ -21,9 +24,10 @@ if __name__ == "__main__":
     outfile = sys.argv[2]
 
     with open(datafile) as infile:
-        fours = infile.read()
-    soc_ids = fours.split('\n')
-
+        fours_file = infile.read()
+    soc_ids = re.findall('[0-9a-z]{4}-[0-9a-z]{4}?', fours_file, re.DOTALL)
+    for soc in soc_ids:
+        print "soc:", soc
     Requester = utils.ViewRequestHandler()
     Analyzer = utils.DatasetAnalyzer()
 

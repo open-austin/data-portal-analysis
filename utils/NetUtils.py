@@ -4,6 +4,8 @@
 import requests
 import logging
 
+logging.getLogger()
+
 class SocIdGetter:
     def __init__(self):
         self._views_url = "https://data.austintexas.gov/views"
@@ -68,6 +70,5 @@ class ViewRequestHandler:
             logging.critical("Error getting data from %s message: %s"
                              % (request_url, result.json()['message']))
             return "null"
-        print result
         logging.info("Got data from %s" % request_url)
         return result.json()
