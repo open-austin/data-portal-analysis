@@ -11,7 +11,7 @@ import argparse
 
 def run_online_analysis(outfile):
     IdGetter = utilities.SocIdGetter()
-    soc_ids = IdGetter.soc_ids
+    soc_ids = IdGetter.fourby_list
     ViewRequester = utilities.ViewRequestHandler()
     Analyzer = utilities.DatasetAnalyzer()
 
