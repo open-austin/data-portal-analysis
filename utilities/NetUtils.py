@@ -10,58 +10,60 @@ logging.getLogger()
 
 class SocIdGetter:
     def __init__(self):
-        self._views_url = "http://data.austintexas.gov/views"
+        self._views_url = "http://data.austintexas.gov/api/search/views.json"
         self._migrations_api = "http://data.austintexas.gov/api/migrations/"
         self._view_metadata = self.get_all_view_ids()
-        self.soc_ids = self.filter_view_ids(self._view_metadata)
+        self._tabular_ids = self.filter_view_ids(self._view_metadata)
+        self.fourby_list = self.filter_tabular_ids(self._tabular_ids)
 
     def get_all_view_ids(self):
         req = requests.get(self._views_url)
         views_response_json = req.json()
         view_metadata = []
-        for view in views_response_json:
+        for view in views_response_json['results']:
             try:
-                display_type = view['displayType']
-            except(KeyError): # if view represents a data_lens page, we ignore it
+                display_type = view['view']['displayType']
+            except(KeyError): # this means the the view represents a data_lens page, so we ignore it
                 continue
-            soc_id = view['id']
-            view_type = view['viewType']
-            display_type = view['displayType']
+            soc_id = view['view']['id']
+            view_type = view['view']['viewType']
+            display_type = view['view']['displayType']
             item = [soc_id, view_type, display_type] # these attributes are used later on to filter out stuff we don't want
             view_metadata.append(item)
         return view_metadata    
 
     def filter_view_ids(self, view_metadata):
-        dataset_ids = []
-        for data_list in view_metadata:
-            if data_list[1] == "tabular":
-                if data_list[2] == "table":
-                    dataset_ids.append(data_list[0])
+        tabular_ids = []
+        for i in view_metadata:
+            if i[1] == "tabular":
+                if i[2] == "table":
+                    tabular_ids.append(i[0])
                 else:
                     continue
             else:
                 continue
-        return dataset_ids
+        return tabular_ids
 
-    def filter_table_ids(self, dataset_ids):
+    def filter_tabular_ids(self, tabular_ids):
         fourby_list = [] # these will be the "new back end" ids of primary data assets
-        for set_id in dataset_ids:
-            url = self._migrations_api + set_id
+        for i in tabular_ids:
+            url = self._migrations_api + i
             req = requests.get(url)
             response_json = req.json()
             try:
-                new_id = response_json['nbeId']
+                fourby_item = response_json['nbeId']
             except(KeyError):
                 logging.info("%s is not a primary data asset."
-                             % set_id)
+                             % i)
+                print url # added temporarily for debugging
                 continue
             else:
-                soc_ids.append(new_id)
+                fourby_list.append(fourby_item)
         return fourby_list
         
 class ViewRequestHandler:
     def __init__(self):
-        self._request_url = "http://data.austintexas.gov/views/"
+        self._request_url = "http://data.austintexas.gov/api/views/"
 
     def get_view(self, socrata_id):
         request_url = self._request_url + socrata_id + '.json'
