@@ -27,7 +27,7 @@ class SocIdGetter:
             soc_id = view['id']
             view_type = view['viewType']
             display_type = view['displayType']
-            item = [soc_id, view_type, display_type] # these attributes are used to filter out stuff we don't want
+            item = [soc_id, view_type, display_type] # these attributes are used later on to filter out stuff we don't want
             view_metadata.append(item)
         return view_metadata    
 
@@ -44,7 +44,7 @@ class SocIdGetter:
         return dataset_ids
 
     def filter_table_ids(self, dataset_ids):
-        fourby_list = [] # these will be the "new back end" ids of primary data assets (not derived views, etc)
+        fourby_list = [] # these will be the "new back end" ids of primary data assets
         for set_id in dataset_ids:
             url = self._migrations_api + set_id
             req = requests.get(url)
