@@ -1,4 +1,4 @@
-
+import json
 import csv
 import datetime
 import logging
@@ -13,14 +13,14 @@ class DatasetAnalyzer:
         """
         self._datasets = []
 
-        dataset_headers = ["id", "soc_resource_id", "name", "dept",
-                           "snapshot_date_time"]
-        column_headers = ["col_position", "col_name", "col_field_name",
-                          "soc_id", "soc_table_column_id",
-                          "soc_data_type_name", "soc_render_type_name",
-                          "num_null", "num_not_null", "ex_value"]
-        generated_headers = ["is_current", "report_creation_time"]
-        self._headers = dataset_headers + column_headers + generated_headers
+        # dataset_headers = ["id", "soc_resource_id", "name", "dept",
+        #                    "snapshot_date_time"]
+        # column_headers = ["col_position", "col_name", "col_field_name",
+        #                   "soc_id", "soc_table_column_id",
+        #                   "soc_data_type_name", "soc_render_type_name",
+        #                   "num_null", "num_not_null", "ex_value"]
+        self._generated_headers = ["is_current", "report_creation_time"]
+#        self._headers = dataset_headers + column_headers + generated_headers
 
         cur_time = datetime.datetime.now().replace(microsecond=0).isoformat()
         self._creation_time = cur_time
@@ -156,11 +156,18 @@ class DatasetAnalyzer:
             date = "null"
         return date
 
+    def get_headers(self):
+        with open("utilities/headers.json") as headerfile:
+            headerset = headerfile.read()
+            headers = ['id']
+            headers.extend(self._analyze_dataset(json.loads(headerset))[0])
+            headers.extend(self._generated_headers)
+            return headers
+
     def make_csv(self, filename):
-        if len(self._rows) == 0:
-            raise Exception("Add datasets before calling make_csv")
         with open(filename, "wb") as outfile:
             writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL)
-            writer.writerow(self._headers)
+            writer.writerow(self.get_headers())
+            
             for number, row in enumerate(self._rows):
                 writer.writerow([number+1]+row)
