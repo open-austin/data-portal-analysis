@@ -149,7 +149,7 @@ class DatasetAnalyzer:
         """This function fills the snapshot_date_time column.
         """
         try:
-            date = dataset['snapshot_time']
+            date = dataset['snapshot_date_time']
         except(KeyError):
             logging.warn("snapshot_time not found for dataset %s"
                          % dataset['id'])
