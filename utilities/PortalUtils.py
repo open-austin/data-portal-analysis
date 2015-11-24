@@ -160,11 +160,17 @@ class DatasetAnalyzer:
         with open("utilities/headers.json") as headerfile:
             headerset = headerfile.read()
             headers = ['id']
-            headers.extend(self._analyze_dataset(json.loads(headerset))[0])
+            headers.extend(self._analyze_dataset(json.loads(headerset))[0][:-2])
             headers.extend(self._generated_headers)
             return headers
 
-    def make_csv(self, filename):
+    def make_csv(self, filename=None):
+        if filename is None:
+            print(self.get_headers())
+            
+            for number, row in enumerate(self._rows):
+                print([number+1]+row)
+            return
         with open(filename, "wb") as outfile:
             writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL)
             writer.writerow(self.get_headers())
