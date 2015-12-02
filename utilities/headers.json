@@ -28,7 +28,7 @@
     "dataTypeName" : "soc_data_type_name",
     "fieldName" : "col_field_name",
     "position" : "col_position",
-    "renderTypeName" : "text",
+    "renderTypeName" : "soc_render_type_name",
     "tableColumnId" : "soc_table_column_id",
     "width" : 100,
     "cachedContents" : {
