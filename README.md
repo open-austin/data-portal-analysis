@@ -45,7 +45,7 @@ Coming soon
 
 ## History
 
-Coming soon.
+A detailed record of significant changes can be found in [the changelog](https://github.com/open-austin/data-portal-analysis/blob/master/CHANGELOG.md)
 
 ## License
 

@@ -100,7 +100,7 @@ class DatasetAnalyzer:
         current_row.append(col['tableColumnId'])
         current_row.append(col['dataTypeName'])
         current_row.append(col['renderTypeName'])
-        current_row.extend(self._get_cached_contents(col))
+#        current_row.extend(self._get_cached_contents(col))
         return current_row
 
     def _get_cached_contents(self, col):
