@@ -80,6 +80,6 @@ class ViewRequestHandler:
 
         dataset = result.json()
         cur_time = datetime.datetime.now().replace(microsecond=0)
-        dataset['snapshot_time'] = cur_time.isoformat()
+        dataset['snapshot_date_time'] = cur_time.isoformat()
 
         return dataset
