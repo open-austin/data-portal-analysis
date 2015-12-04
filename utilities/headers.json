@@ -1,91 +1,91 @@
 {
     "id" : "soc_resource_id",
     "snapshot_date_time" : "snapshot_date_time",
-  "name" : "resource_name",
-  "attribution" : "attribution",
-  "averageRating" : "average_rating",
-  "createdAt" : "created_at",
+    "name" : "resource_name",
+    "attribution" : "attribution",
+    "averageRating" : "average_rating",
+    "createdAt" : "created_at",
     "description" : "description",
-  "downloadCount" : "dl_count",
-  "newBackend" : "new_backend",
-  "numberOfComments" : "num_comments",
-  "oid" : "resource_oid",
-  "publicationAppendEnabled" : "publication_append_enabled",
-  "publicationDate" : "publication_date",
-  "publicationGroup" : "publication_group",
-  "publicationStage" : "publication_stage",
-  "rowsUpdatedAt" : "rows_updated_at",
-  "rowsUpdatedBy" : "rows_updated_by",
-  "tableId" : "table_id",
-  "totalTimesRated" : "num_times_rated",
-  "viewCount" : "view_count",
-  "viewLastModified" : "view_last_modified",
-  "viewType" : "viewType",
-  "columns" : [ {
-    "id" : "soc_id",
-    "name" : "col_name",
-    "dataTypeName" : "soc_data_type_name",
-    "fieldName" : "col_field_name",
-    "position" : "col_position",
-    "renderTypeName" : "soc_render_type_name",
-    "tableColumnId" : "soc_table_column_id",
-    "width" : "width",
-      "format" : {
-	  "view" : "format_view",  
-      "precisionStyle" : "format_precision",
-      "align" : "format_alignment",
-      "noCommas" : "format_no_commas"
-    }
-  } ],
-  "grants" : [ {
-    "inherited" : "grants_inherited",
-    "type" : "grants_type",
-    "flags" : "grants_flags_list"
-  } ],
-  "metadata" : {
-    "custom_fields" : {
-      "Additional Information" : {
-        "Frequency" : "publish_frequency",
-        "Department" : "dept"
-      }
+    "downloadCount" : "dl_count",
+    "newBackend" : "new_backend",
+    "numberOfComments" : "num_comments",
+    "oid" : "resource_oid",
+    "publicationAppendEnabled" : "publication_append_enabled",
+    "publicationDate" : "publication_date",
+    "publicationGroup" : "publication_group",
+    "publicationStage" : "publication_stage",
+    "rowsUpdatedAt" : "rows_updated_at",
+    "rowsUpdatedBy" : "rows_updated_by",
+    "tableId" : "table_id",
+    "totalTimesRated" : "num_times_rated",
+    "viewCount" : "view_count",
+    "viewLastModified" : "view_last_modified",
+    "viewType" : "viewType",
+    "columns" : [ {
+	"id" : "soc_id",
+	"name" : "col_name",
+	"dataTypeName" : "soc_data_type_name",
+	"fieldName" : "col_field_name",
+	"position" : "col_position",
+	"renderTypeName" : "soc_render_type_name",
+	"tableColumnId" : "soc_table_column_id",
+	"width" : "width",
+	"format" : {
+	    "view" : "format_view",
+	    "precisionStyle" : "format_precision",
+	    "align" : "format_alignment",
+	    "noCommas" : "format_no_commas"
+	}
+    } ],
+    "grants" : [ {
+	"inherited" : "grants_inherited",
+	"type" : "grants_type",
+	"flags" : "grants_flags_list"
+    } ],
+    "metadata" : {
+	"custom_fields" : {
+	    "Additional Information" : {
+		"Frequency" : "publish_frequency",
+		"Department" : "dept"
+	    }
+	},
+	"renderTypeConfig" : {
+	    "visible" : {
+		"table" : "render_type_config_visible_table"
+	    }
+	},
+	"availableDisplayTypes" : "display_type_list",
+	"rdfSubject" : "rdf_subject"
     },
-    "renderTypeConfig" : {
-      "visible" : {
-        "table" : "render_type_config_visible_table"
-      }
+    "owner" : {
+	"id" : "owner_id",
+	"displayName" : "owner_display_name",
+	"roleName" : "owner_role_name",
+	"screenName" : "owner_screen_name",
+	"rights" : "owner_rights_list"
     },
-      "availableDisplayTypes" : "display_type_list",
-    "rdfSubject" : "rdf_subject"
-  },
-  "owner" : {
-    "id" : "owner_id",
-    "displayName" : "owner_display_name",
-    "roleName" : "owner_role_name",
-    "screenName" : "owner_screen_name",
-    "rights" : "owner_rights_list"
-  },
-  "query" : {
-    "orderBys" : [ {
-      "ascending" : "query_orderbys_ascending",
-      "expression" : {
-        "columnId" : "query_orderbys_expression_col_id",
-        "type" : "query_orderbys_expression_type"
-      }
-    } ]
-  },
-  "rights" : "rights_list",
-  "sortBys" : [ {
-    "id" : "sortbys_id",
-    "viewColumnId" : "sortbys_view_col_id",
-    "flags" : "sortbys_flags_list"
-  } ],
-  "tableAuthor" : {
-    "id" : "table_author_id",
-    "displayName" : "table_author_display_name",
-    "roleName" : "table_author_role_name",
-    "screenName" : "table_author_screen_name",
-    "rights" : "table_author_rights_list"
-  },
+    "query" : {
+	"orderBys" : [ {
+	    "ascending" : "query_orderbys_ascending",
+	    "expression" : {
+		"columnId" : "query_orderbys_expression_col_id",
+		"type" : "query_orderbys_expression_type"
+	    }
+	} ]
+    },
+    "rights" : "rights_list",
+    "sortBys" : [ {
+	"id" : "sortbys_id",
+	"viewColumnId" : "sortbys_view_col_id",
+	"flags" : "sortbys_flags_list"
+    } ],
+    "tableAuthor" : {
+	"id" : "table_author_id",
+	"displayName" : "table_author_display_name",
+	"roleName" : "table_author_role_name",
+	"screenName" : "table_author_screen_name",
+	"rights" : "table_author_rights_list"
+    },
     "tags" : "tags_list",
-  "flags" : "flags_list"
+    "flags" : "flags_list"
 }
