@@ -20,7 +20,7 @@ def test_add_dataset():
 
 def test_get_dataset_info():
     expected = [u"abcd-1234", u"Test Dataset",
-                u"Test Department", "1970-01-01T0:00:00"]
+                u"Test Department", "1970-01-01T00:00:00"]
     analyzer = PortalUtils.DatasetAnalyzer()
     result = analyzer._get_dataset_info(test_set)
     assert_equals(result, expected)
