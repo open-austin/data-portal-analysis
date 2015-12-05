@@ -48,7 +48,6 @@ class DatasetAnalyzer:
         for col in dataset['columns']:
             current_row = []
             current_row.extend(dataset_info)
-#            current_row.extend(self._get_column_info(col))
             current_row.append(u"IS_CURRENT")         # placeholder
             current_row.append(self._creation_time)
             encoded_row = []      # csv module doesn't like unicode
@@ -100,50 +99,7 @@ class DatasetAnalyzer:
         current_row.append(col['tableColumnId'])
         current_row.append(col['dataTypeName'])
         current_row.append(col['renderTypeName'])
-#        current_row.extend(self._get_cached_contents(col))
         return current_row
-
-    def _get_cached_contents(self, col):
-        """This function retrieves information from columns
-        that have a section for cached contents.
-        """
-        return_list = []
-        try:
-            cached = col['cachedContents']
-            return_list.append(cached['null'])
-            return_list.append(cached['non_null'])
-        except:
-            logging.debug("No cachedContents found for column %s"
-                          % col['fieldName'])
-            return_list.extend(['null', 'null'])
-
-        # The following code (for processing the 'top' field) needs work,
-        # but first we need to decide how unexpected content should
-        # be handled.
-        try:
-            top = col['cachedContents']['top']
-            item = top[0]['item']
-        except:
-            return_list.append('null')
-            return return_list
-
-        if col['dataTypeName'] == 'url':
-            try:
-                item = item['url']
-            except:
-                logging.warn("""In top url for column %s: no associated url.
-        Object: %s"""
-                             % (col['fieldName'], repr(item)))
-                item = 'null'
-
-        if col['dataTypeName'] == 'location':
-            try:
-                item = item['human_address']
-            except(KeyError):
-                pass
-
-        return_list.append(item)
-        return return_list
 
     def _get_date_time(self, dataset):
         """This function fills the snapshot_date_time column.
@@ -166,14 +122,13 @@ class DatasetAnalyzer:
 
     def make_csv(self, filename=None):
         if filename is None:
-            print(self.get_headers())
-            
+            print(self.get_headers())            
             for number, row in enumerate(self._rows):
                 print([number+1]+row)
             return
         with open(filename, "wb") as outfile:
             writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL)
             writer.writerow(self.get_headers())
-            
             for number, row in enumerate(self._rows):
                 writer.writerow([number+1]+row)
+        return

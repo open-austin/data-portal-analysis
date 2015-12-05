@@ -1,0 +1,146 @@
+{
+  "flags": [
+    "flag1",
+    "flag2"
+  ],
+  "tags": [
+    "tag1",
+    "tag2"
+  ],
+  "tableAuthor": {
+    "rights": [
+      "right1",
+      "right2"
+    ],
+    "screenName": "testowner",
+    "roleName": "tester",
+    "displayName": "testowner",
+    "id": "abcd-1234"
+  },
+  "sortBys": [
+    {
+      "flags": [
+        "asc"
+      ],
+      "viewColumnId": 123456789,
+      "id": 0
+    }
+  ],
+  "rights": [
+    "right1",
+    "right2"
+  ],
+  "query": {
+    "orderBys": [
+      {
+        "expression": {
+          "type": "column",
+          "columnId": 123456789
+        },
+        "ascending": true
+      }
+    ]
+  },
+  "owner": {
+    "rights": [
+      "right1",
+      "right2"
+    ],
+    "screenName": "testowner",
+    "roleName": "tester",
+    "displayName": "testowner",
+    "id": "abcd-1234"
+  },
+  "metadata": {
+    "rdfSubject": "0",
+    "availableDisplayTypes": [
+      "type1",
+      "type2"
+    ],
+    "renderTypeConfig": {
+      "visible": {
+        "table": true
+      }
+    },
+    "custom_fields": {
+      "Additional Information": {
+        "Department": "Test Department",
+        "Frequency": "Weekly"
+      }
+    }
+  },
+  "grants": [
+    {
+      "flags": [
+        "flag1",
+        "flag2"
+      ],
+      "type": "grants_type",
+      "inherited": false
+    }
+  ],
+  "columns": [
+    {
+      "format": { },
+      "width": 1,
+      "tableColumnId": 1,
+      "renderTypeName": "text",
+      "position": 1,
+      "fieldName": "first_column",
+      "dataTypeName": "text",
+      "name": "First Column",
+      "id": 1
+    },
+    {
+      "format": {
+        "noCommas": false,
+        "align": "right",
+        "precisionStyle": "standard"
+      },
+      "width": 2,
+      "tableColumnId": 2,
+      "renderTypeName": "text",
+      "position": 2,
+      "fieldName": "text_column",
+      "dataTypeName": "text",
+      "name": "Text Column",
+      "id": 2
+    },
+    {
+      "format": {
+        "align": "left",
+        "view": "date"
+      },
+      "width": 3,
+      "tableColumnId": 3,
+      "renderTypeName": "calendar_date",
+      "position": 3,
+      "fieldName": "date_column",
+      "dataTypeName": "calendar_date",
+      "name": "Date Column",
+      "id": 3
+    }
+  ],
+  "viewType": "test",
+  "viewLastModified": 0,
+  "viewCount": 0,
+  "totalTimesRated": 0,
+  "tableId": 7654321,
+  "rowsUpdatedBy": "abcd-1234",
+  "rowsUpdatedAt": 0,
+  "publicationStage": "test",
+  "publicationGroup": 1234567,
+  "publicationDate": 0,
+  "publicationAppendEnabled": false,
+  "oid": 0,
+  "numberOfComments": 0,
+  "newBackend": true,
+  "downloadCount": 0,
+  "createdAt": 0,
+  "description": "test dataset",
+  "averageRating": 0,
+  "attribution": "test",
+  "name": "Test Dataset",
+  "snapshot_date_time": "0000-00-00T0:00:00",
+  "id": "abcd-1234"
+}
