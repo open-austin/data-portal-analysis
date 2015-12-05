@@ -1,0 +1,164 @@
+{
+  "id" : "soc_resource_id",
+    "snapshot_date_time" : "snapshot_date_time",
+  "name" : "name",
+  "averageRating" : 0,
+  "createdAt" : 1345061774,
+  "description" : "dataset_description",
+  "displayType" : "table",
+  "downloadCount" : 420,
+  "indexUpdatedAt" : 1443067270,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 13463817,
+  "publicationAppendEnabled" : true,
+  "publicationDate" : 1443065477,
+  "publicationGroup" : 404266,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1443065457,
+  "rowsUpdatedBy" : "gbgk-fqw2",
+  "tableId" : 4434777,
+  "totalTimesRated" : 0,
+  "viewCount" : 8595,
+  "viewLastModified" : 1443065477,
+  "viewType" : "tabular",
+  "columns" : [ {
+    "id" : "soc_id",
+    "name" : "col_name",
+    "dataTypeName" : "soc_data_type_name",
+    "fieldName" : "col_field_name",
+    "position" : "col_position",
+    "renderTypeName" : "soc_render_type_name",
+    "tableColumnId" : "soc_table_column_id",
+    "width" : 100,
+    "cachedContents" : {
+      "non_null" : "num_not_null",
+      "smallest" : "-----",
+      "null" : "num_null",
+      "largest" : "VACANT",
+      "top" : [ {
+        "count" : 20,
+        "item" : "ex_value"
+      }, {
+        "count" : 19,
+        "item" : "6700"
+      }, {
+        "count" : 18,
+        "item" : "10701"
+      }, {
+        "count" : 17,
+        "item" : "7901"
+      }, {
+        "count" : 16,
+        "item" : "1000"
+      }, {
+        "count" : 15,
+        "item" : "5407"
+      }, {
+        "count" : 14,
+        "item" : "3921"
+      }, {
+        "count" : 13,
+        "item" : "13210"
+      }, {
+        "count" : 12,
+        "item" : "11754"
+      }, {
+        "count" : 11,
+        "item" : "904"
+      }, {
+        "count" : 10,
+        "item" : "4708"
+      }, {
+        "count" : 9,
+        "item" : "4448"
+      }, {
+        "count" : 8,
+        "item" : "1600"
+      }, {
+        "count" : 7,
+        "item" : "13010"
+      }, {
+        "count" : 6,
+        "item" : "4508"
+      }, {
+        "count" : 5,
+        "item" : "15922"
+      }, {
+        "count" : 4,
+        "item" : "16924"
+      }, {
+        "count" : 3,
+        "item" : "3612"
+      }, {
+        "count" : 2,
+        "item" : "710"
+      }, {
+        "count" : 1,
+        "item" : "201"
+      } ]
+    },
+    "format" : {
+      "precisionStyle" : "standard",
+      "noCommas" : "false",
+      "align" : "right"
+    }
+  } ],
+  "disabledFeatureFlags" : [ "allow_comments" ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "Additional Information" : {
+        "Frequency" : "Monthly",
+        "Department" : "dept"
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "rdfSubject" : "0"
+  },
+  "owner" : {
+    "id" : "gbgk-fqw2",
+    "displayName" : "Sara",
+    "profileImageUrlLarge" : "/api/users/gbgk-fqw2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/gbgk-fqw2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/gbgk-fqw2/profile_images/TINY",
+    "roleName" : "publisher",
+    "screenName" : "Sara",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "query" : {
+    "orderBys" : [ {
+      "ascending" : false,
+      "expression" : {
+        "columnId" : 223204396,
+        "type" : "column"
+      }
+    } ]
+  },
+  "rights" : [ "read" ],
+  "sortBys" : [ {
+    "id" : 0,
+    "viewColumnId" : 223204396
+  } ],
+  "tableAuthor" : {
+    "id" : "gbgk-fqw2",
+    "displayName" : "Sara",
+    "profileImageUrlLarge" : "/api/users/gbgk-fqw2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/gbgk-fqw2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/gbgk-fqw2/profile_images/TINY",
+    "roleName" : "publisher",
+    "screenName" : "Sara",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "tags" : [ "addressing", "address", "911", "change", "street" ],
+  "flags" : [ "default" ]
+}

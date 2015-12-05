@@ -1,0 +1,214 @@
+{
+  "id" : "nguv-n54k",
+  "name" : "Restaurant Inspection Scores",
+  "attribution" : "City of Austin",
+  "averageRating" : 0,
+  "createdAt" : 1422940468,
+  "description" : "Provides restaurant scores for inspections performed within the last three years. Online search of this data set also available at: http://www.ci.austin.tx.us/health/restaurant/search.cfm",
+  "downloadCount" : 0,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 11215871,
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1431366051,
+  "publicationGroup" : 2188140,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1449098583,
+  "rowsUpdatedBy" : "99uc-9byy",
+  "tableId" : 2814127,
+  "totalTimesRated" : 0,
+  "viewCount" : 4,
+  "viewLastModified" : 1440542788,
+  "viewType" : "tabular",
+  "columns" : [ {
+    "id" : 203084952,
+    "name" : "Restaurant Name",
+    "dataTypeName" : "text",
+    "fieldName" : "restaurant_name",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 24401536,
+    "width" : 280,
+    "format" : { }
+  }, {
+    "id" : 203084953,
+    "name" : "Zip Code",
+    "dataTypeName" : "text",
+    "fieldName" : "zip_code",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 24401538,
+    "width" : 196,
+    "format" : {
+      "precisionStyle" : "standard",
+      "align" : "right",
+      "noCommas" : "false"
+    }
+  }, {
+    "id" : 203084954,
+    "name" : "Inspection Date",
+    "dataTypeName" : "calendar_date",
+    "fieldName" : "inspection_date",
+    "position" : 3,
+    "renderTypeName" : "calendar_date",
+    "tableColumnId" : 27806952,
+    "width" : 280,
+    "format" : {
+      "view" : "date",
+      "align" : "left"
+    }
+  }, {
+    "id" : 203084955,
+    "name" : "Score",
+    "dataTypeName" : "number",
+    "fieldName" : "score",
+    "position" : 4,
+    "renderTypeName" : "number",
+    "tableColumnId" : 24401541,
+    "width" : 160,
+    "format" : { }
+  }, {
+    "id" : 203084956,
+    "name" : "Address (city)",
+    "dataTypeName" : "text",
+    "fieldName" : "address_city",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 24401545,
+    "format" : { }
+  }, {
+    "id" : 203084957,
+    "name" : "Address (state)",
+    "dataTypeName" : "text",
+    "fieldName" : "address_state",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 24401547,
+    "format" : { }
+  }, {
+    "id" : 203084958,
+    "name" : "Address",
+    "dataTypeName" : "point",
+    "fieldName" : "address",
+    "position" : 8,
+    "renderTypeName" : "point",
+    "tableColumnId" : 24401549,
+    "format" : { }
+  }, {
+    "id" : 203084959,
+    "name" : "Facility ID",
+    "dataTypeName" : "number",
+    "description" : "FOLDERRSN",
+    "fieldName" : "facility_id",
+    "position" : 9,
+    "rdfProperties" : "",
+    "renderTypeName" : "number",
+    "tableColumnId" : 24401551,
+    "width" : 100,
+    "format" : {
+      "rdf" : "",
+      "precisionStyle" : "standard",
+      "noCommas" : "true",
+      "align" : "right"
+    }
+  }, {
+    "id" : 203084960,
+    "name" : "Process Description",
+    "dataTypeName" : "text",
+    "description" : "PROCESSDESC",
+    "fieldName" : "process_description",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 24401553,
+    "width" : 100,
+    "format" : { }
+  }, {
+    "id" : 203084961,
+    "name" : "Address (address)",
+    "dataTypeName" : "text",
+    "fieldName" : "address_address",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 27806953,
+    "format" : { }
+  }, {
+    "id" : 203084962,
+    "name" : "Address (zip)",
+    "dataTypeName" : "text",
+    "fieldName" : "address_zip",
+    "position" : 12,
+    "renderTypeName" : "text",
+    "tableColumnId" : 27806954,
+    "format" : { }
+  }, {
+    "id" : 203084963,
+    "name" : "Zip Codes",
+    "dataTypeName" : "number",
+    "fieldName" : ":@computed_region_a3it_2a2z",
+    "position" : 13,
+    "renderTypeName" : "number",
+    "tableColumnId" : 27806955,
+    "format" : { }
+  }, {
+    "id" : 203084964,
+    "name" : "Single Member Council Districts",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_8spj_utxs",
+    "position" : 14,
+    "renderTypeName" : "number",
+    "tableColumnId" : 28221579,
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "Additional Information" : {
+        "Frequency" : "Weekly",
+        "Department" : "Health and Human Services"
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "rdfSubject" : "0"
+  },
+  "owner" : {
+    "id" : "99uc-9byy",
+    "displayName" : "opendataatx",
+    "roleName" : "publisher",
+    "screenName" : "opendataatx",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "query" : {
+    "orderBys" : [ {
+      "ascending" : true,
+      "expression" : {
+        "columnId" : 203084952,
+        "type" : "column"
+      }
+    } ]
+  },
+  "rights" : [ "read" ],
+  "sortBys" : [ {
+    "id" : 0,
+    "viewColumnId" : 203084952,
+    "flags" : [ "asc" ]
+  } ],
+  "tableAuthor" : {
+    "id" : "99uc-9byy",
+    "displayName" : "opendataatx",
+    "roleName" : "publisher",
+    "screenName" : "opendataatx",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_nominations", "approve_nominations", "moderate_comments", "manage_stories", "feature_items", "change_configurations", "view_domain", "view_others_datasets", "create_pages", "edit_pages", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards" ]
+  },
+  "tags" : [ "restaurant", "geodata", "health", "fdhealth" ],
+  "flags" : [ "default" ]
+}
