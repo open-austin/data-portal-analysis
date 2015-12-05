@@ -104,13 +104,17 @@ class DatasetAnalyzer:
     def _get_date_time(self, dataset):
         """This function fills the snapshot_date_time column.
         """
+        if dataset['createdAt'] == "created_at":
+            return "created_at"
         try:
-            date = dataset['snapshot_date_time']
+            epoch_time = float(dataset['createdAt'])
+            date_time = datetime.datetime.utcfromtimestamp(
+                epoch_time).replace(microsecond=0).isoformat()
         except(KeyError):
             logging.warn("snapshot_time not found for dataset %s"
                          % dataset['id'])
-            date = "null"
-        return date
+            date_time = "null"
+        return date_time
 
     def get_headers(self):
         with open("utilities/headers.json") as headerfile:
