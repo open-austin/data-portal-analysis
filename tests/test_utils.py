@@ -1,12 +1,11 @@
 import sys
 import os.path
 sys.path.append(os.path.dirname(__file__))
-sys.path.append(os.path.dirname(__file__) + '/tests')
 from nose.tools import *
 from utilities import *
 
 
-test_reader = FileUtils.JsonFileReader('test_view_resource.json')
+test_reader = FileUtils.JsonFileReader('tests/test_view_resource.json')
 test_set = test_reader.get_all_datasets()[0]
 #test_set = test_sets[0]
 
