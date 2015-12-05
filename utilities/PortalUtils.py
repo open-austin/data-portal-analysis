@@ -104,8 +104,10 @@ class DatasetAnalyzer:
     def _get_date_time(self, dataset):
         """This function fills the snapshot_date_time column.
         """
+        if dataset['createdAt'] == "created_at":
+            return "created_at"
         try:
-            epoch_time = dataset['createdAt']
+            epoch_time = float(dataset['createdAt'])
             date_time = datetime.datetime.utcfromtimestamp(
                 epoch_time).replace(microsecond=0).isoformat()
         except(KeyError):
