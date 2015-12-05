@@ -1,4 +1,0 @@
-id,soc_resource_id,resource_name,dept,snapshot_date_time,col_position,col_name,col_field_name,soc_id,soc_table_column_id,soc_data_type_name,soc_render_type_name,is_current,report_creation_time
-1,abcd-1234,Test Dataset,Test Department,0000-00-00T0:00:00,1,First Column,first_column,1,1,text,text,IS_CURRENT,2015-12-02T22:01:00
-2,abcd-1234,Test Dataset,Test Department,0000-00-00T0:00:00,2,Text Column,text_column,2,2,text,text,IS_CURRENT,2015-12-02T22:01:00
-3,abcd-1234,Test Dataset,Test Department,0000-00-00T0:00:00,3,Date Column,date_column,3,3,calendar_date,calendar_date,IS_CURRENT,2015-12-02T22:01:00
