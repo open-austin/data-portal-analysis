@@ -48,6 +48,7 @@ class DatasetAnalyzer:
         for col in dataset['columns']:
             current_row = []
             current_row.extend(dataset_info)
+            current_row.extend(self._get_column_info(col))
             current_row.append(u"IS_CURRENT")         # placeholder
             current_row.append(self._creation_time)
             encoded_row = []      # csv module doesn't like unicode
