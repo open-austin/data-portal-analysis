@@ -1,4 +1,4 @@
 id,soc_resource_id,resource_name,dept,created_at,col_position,col_name,col_field_name,soc_id,soc_table_column_id,soc_data_type_name,soc_render_type_name,is_current,report_creation_time
-1,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,1,First Column,first_column,1,1,text,text,IS_CURRENT,2015-12-08T14:25:50
-2,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,2,Text Column,text_column,2,2,text,text,IS_CURRENT,2015-12-08T14:25:50
-3,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,3,Date Column,date_column,3,3,calendar_date,calendar_date,IS_CURRENT,2015-12-08T14:25:50
+1,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,1,First Column,first_column,1,1,text,text,IS_CURRENT,null
+2,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,2,Text Column,text_column,2,2,text,text,IS_CURRENT,null
+3,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,3,Date Column,date_column,3,3,calendar_date,calendar_date,IS_CURRENT,null
