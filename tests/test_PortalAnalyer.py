@@ -4,7 +4,7 @@ from nose.tools import *
 import utilities
 
 def test_portal_analyzer():
-    Reader = utilities.JsonFileReader('test_view_resource.json')
+    Reader = utilities.JsonFileReader('tests/test_view_resource.json')
     datasets = Reader.get_all_datasets()
     Analyzer = utilities.DatasetAnalyzer()
     Analyzer._creation_time = 'null' # Avoids timestamp conflict
