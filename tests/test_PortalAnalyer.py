@@ -16,7 +16,7 @@ def test_portal_analyzer():
 
     with open('test_results.csv') as results_file:
         results_str = results_file.read()
-    with open('expected_out.csv', 'r') as test_file:
+    with open('tests/expected_out.csv', 'r') as test_file:
         expected_str = test_file.read()
 
     assert_equals(results_str, expected_str)
