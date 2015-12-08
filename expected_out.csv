@@ -1,4 +1,0 @@
-id,soc_resource_id,resource_name,dept,created_at,is_current,report_creation_time
-1,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,IS_CURRENT,null
-2,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,IS_CURRENT,null
-3,abcd-1234,Test Dataset,Test Department,1970-01-01T00:00:00,IS_CURRENT,null
