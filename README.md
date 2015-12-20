@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg)](https://travis-ci.org/open-austin/data-portal-analysis)  [![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=Ready)](https://waffle.io/open-austin/data-portal-analysis) 
+[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg?branch=develop)](https://travis-ci.org/open-austin/data-portal-analysis) 
+[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=StoriesReady)](https://waffle.io/open-austin/data-portal-analysis) 
 
 # City Data Portal Analysis
 
