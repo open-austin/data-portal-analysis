@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg?branch=develop)](https://travis-ci.org/open-austin/data-portal-analysis) 
-[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=StoriesReady)](https://waffle.io/open-austin/data-portal-analysis) 
+# Data Portal Analysis Development Branch
 
-# City Data Portal Analysis
+[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg?branch=develop)](https://travis-ci.org/open-austin/data-portal-analysis) [![Documentation Status](https://readthedocs.org/projects/data-portal-analysis/badge/?version=develop)](http://data-portal-analysis.readthedocs.org/en/develop/?badge=develop)
+
+[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=Ready)](https://waffle.io/open-austin/data-portal-analysis) 
 
 There's a lot of content on the City of Austin's open data portal. This project is about studying that content so we can make the portal better.  
 
@@ -27,7 +28,7 @@ Table grain... How often are we publishing aggregate information (subtotals and 
 
 ## Contributing terms
 
-When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the terms [here](https://github.com/open-austin/data-portal-analysis/blob/master/CONTRIBUTING.md).
+When you contribute to this project, you are sharing and/or creating content. Please do not contribute content unless you agree with the terms [here](https://github.com/open-austin/data-portal-analysis/blob/develop/CONTRIBUTING.md).
 
 ## How to contribute
 
@@ -48,8 +49,8 @@ Coming soon
 
 ## History
 
-A detailed record of significant changes can be found in [the changelog](https://github.com/open-austin/data-portal-analysis/blob/master/CHANGELOG.md)
+A detailed record of significant changes can be found in [the changelog](https://github.com/open-austin/data-portal-analysis/blob/develop/CHANGELOG.md)
 
 ## License
 
-[Unlicense](https://github.com/open-austin/data-portal-analysis/blob/master/LICENSE.md)
+[Unlicense](https://github.com/open-austin/data-portal-analysis/blob/develop/LICENSE.md)
