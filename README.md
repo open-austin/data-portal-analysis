@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=Ready)](https://waffle.io/open-austin/data-portal-analysis)
 # City Data Portal Analysis
 
 There's a lot of content on the City of Austin's open data portal. This project is about studying that content so we can make the portal better.  
