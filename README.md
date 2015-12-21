@@ -1,16 +1,21 @@
-# Data Portal Analysis Development Branch
+# Data Portal Analysis
 
-[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg?branch=develop)](https://travis-ci.org/open-austin/data-portal-analysis) [![Documentation Status](https://readthedocs.org/projects/data-portal-analysis/badge/?version=develop)](http://data-portal-analysis.readthedocs.org/en/develop/?badge=develop)
+There's a lot of content on the City of Austin's open data portal. This project is about studying that content so we can make the portal better. 
 
-[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=Ready)](https://waffle.io/open-austin/data-portal-analysis) 
+## Status 
 
-There's a lot of content on the City of Austin's open data portal. This project is about studying that content so we can make the portal better.  
+[![Build Status](https://travis-ci.org/open-austin/data-portal-analysis.svg?branch=develop)](https://travis-ci.org/open-austin/data-portal-analysis) 
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/88253a7da12a4f85be52f5800d43dcc1/badge.svg)](https://www.quantifiedcode.com/app/project/88253a7da12a4f85be52f5800d43dcc1)
+[![Documentation Status](https://readthedocs.org/projects/data-portal-analysis/badge/?version=latest)](http://data-portal-analysis.readthedocs.org/en/latest/?badge=latest)
 
 ## Current project goals
 
-Write code that grabs specific pieces of information from Austin's public data portal and rearranges it into a format that's useful for analysis. 
+Write code that grabs specific pieces of information from Austin's public data portal and rearranges it into a format that's useful for analysis.
 
 Next goals include automated publishing to the City's data portal, so everyone can access and analyze this data.
+
+[![Stories in Ready](https://badge.waffle.io/open-austin/data-portal-analysis.png?label=ready&title=Ready)](https://waffle.io/open-austin/data-portal-analysis) 
+
 
 ## Why we're doing this
 
