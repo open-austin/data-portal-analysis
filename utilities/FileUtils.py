@@ -29,8 +29,6 @@ class JsonFileReader:
             datasets = data_dict['datasets']
         except(KeyError):
             datasets = [data_dict]
-        except:
-            raise KeyError("No datasets found")
 
         for item in datasets:
             item['snapshot_time'] = self._current_time

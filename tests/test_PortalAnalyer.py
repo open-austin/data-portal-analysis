@@ -1,6 +1,6 @@
 import sys
 import os.path
-from nose.tools import *
+from nose.tools import assert_equals
 import utilities
 
 def test_portal_analyzer():
