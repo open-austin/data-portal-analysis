@@ -2,14 +2,14 @@
 """Main portal analysis script.
 
 """
-import sys
 import utilities
 import logging
-import re
 import argparse
 
 
 def run_online_analysis(outfile):
+    """This function runs the online analyzer; it requires internet access.
+    """
     IdGetter = utilities.SocIdGetter()
     soc_ids = IdGetter.fourby_list
     ViewRequester = utilities.ViewRequestHandler()
@@ -17,7 +17,7 @@ def run_online_analysis(outfile):
 
     for fourby in soc_ids:
         dataset = ViewRequester.get_view(fourby)
-        print "Processing %s" % fourby
+        print("Processing %s" % fourby)
         if dataset == "null":
             continue
         Analyzer.add_dataset(dataset)
@@ -26,6 +26,8 @@ def run_online_analysis(outfile):
 
 
 def run_static_analysis(datafile, outfile):
+    """This function runs the analyzer on a local JSON file.
+    """
     Reader = utilities.JsonFileReader(datafile)
     datasets = Reader.get_all_datasets()
     Analyzer = utilities.DatasetAnalyzer()
@@ -38,23 +40,22 @@ def run_static_analysis(datafile, outfile):
 
 if __name__ == "__main__":
     desc = "ATX data portal analysis script."
-    parser = argparse.ArgumentParser(description = desc)
-    parser.add_argument("output_file", help = "Name of CSV file to be created.")
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument("output_file", help="Name of CSV file to be created.")
     parser.add_argument("--static",
-                        help = "Read the datasets from a static file.")
-    parser.add_argument("-v","--verbose",
+                        help="Read the datasets from a static file.")
+    parser.add_argument("-v", "--verbose",
                         action="store_true",
-                        help = "Increase logfile verbosity to DEBUG")
+                        help="Increase logfile verbosity to DEBUG")
     args = parser.parse_args()
-    
+
     if args.verbose:
         log_level = logging.DEBUG
     else:
         log_level = logging.WARN
     logging.basicConfig(filename="portal_analyzer.log", filemode="w",
-                    level=log_level)
+                        level=log_level)
 
-    
     if args.static:
         run_static_analysis(args.static, args.output_file)
     else:
