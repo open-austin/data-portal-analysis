@@ -3,39 +3,48 @@
 
 """
 import utilities
+import json
 import logging
 import argparse
-
+import datetime
 
 def run_online_analysis(outfile):
     """This function runs the online analyzer; it requires internet access.
     """
-    IdGetter = utilities.SocIdGetter()
-    soc_ids = IdGetter.fourby_list
-    ViewRequester = utilities.ViewRequestHandler()
-    Analyzer = utilities.DatasetAnalyzer()
+    idGetter = utilities.SocIdGetter()
+    soc_ids = idGetter.fourby_list
+    viewRequester = utilities.ViewRequestHandler()
+    analyzer = utilities.DatasetAnalyzer()
 
     for fourby in soc_ids:
-        dataset = ViewRequester.get_view(fourby)
+        dataset = viewRequester.get_view(fourby)
         print("Processing %s" % fourby)
         if dataset == "null":
             continue
-        Analyzer.add_dataset(dataset)
+        analyzer.add_dataset(dataset)
 
-    Analyzer.make_csv(outfile)
+    analyzer.make_csv(outfile)
 
 
 def run_static_analysis(datafile, outfile):
     """This function runs the analyzer on a local JSON file.
     """
-    Reader = utilities.JsonFileReader(datafile)
-    datasets = Reader.get_all_datasets()
-    Analyzer = utilities.DatasetAnalyzer()
+    datasets = []
+    current_time = datetime.datetime.now().replace(microsecond=0).isoformat()
+    with open(datafile) as data_json:
+        json_str = data_json.read()
+        data_dict = json.loads(json_str)
+        print data_dict
+        datasets = [data_dict]
+        for item in datasets:
+            item['snapshot_time'] = current_time
+
+    analyzer = utilities.DatasetAnalyzer()
 
     for item in datasets:
-        Analyzer.add_dataset(item)
+        analyzer.add_dataset(item)
 
-    Analyzer.make_csv(outfile)
+    analyzer.make_csv(outfile)
 
 
 if __name__ == "__main__":
