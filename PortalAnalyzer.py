@@ -14,14 +14,14 @@ def run_online_analysis(outfile):
     idGetter = utilities.SocIdGetter()
     soc_ids = idGetter.fourby_list
     viewRequester = utilities.ViewRequestHandler()
-    analyzer = utilities.DatasetAnalyzer()
+    analyzer = utilities.ViewAnalyzer()
 
     for fourby in soc_ids:
-        dataset = viewRequester.get_view(fourby)
+        view = viewRequester.get_view(fourby)
         print("Processing %s" % fourby)
-        if dataset == "null":
+        if view == "null":
             continue
-        analyzer.add_dataset(dataset)
+        analyzer.add_view(view)
 
     analyzer.make_csv(outfile)
 
@@ -29,20 +29,20 @@ def run_online_analysis(outfile):
 def run_static_analysis(datafile, outfile):
     """This function runs the analyzer on a local JSON file.
     """
-    datasets = []
+    views = []
     current_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     with open(datafile) as data_json:
         json_str = data_json.read()
         data_dict = json.loads(json_str)
         print data_dict
-        datasets = [data_dict]
-        for item in datasets:
+        views = [data_dict]
+        for item in views:
             item['snapshot_time'] = current_time
 
-    analyzer = utilities.DatasetAnalyzer()
+    analyzer = utilities.ViewAnalyzer()
 
-    for item in datasets:
-        analyzer.add_dataset(item)
+    for item in views:
+        analyzer.add_view(item)
 
     analyzer.make_csv(outfile)
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("output_file", help="Name of CSV file to be created.")
     parser.add_argument("--static",
-                        help="Read the datasets from a static file.")
+                        help="Read the views from a static file.")
     parser.add_argument("-v", "--verbose",
                         action="store_true",
                         help="Increase logfile verbosity to DEBUG")

@@ -1,2 +1,2 @@
-from PortalUtils import DatasetAnalyzer
+from PortalUtils import ViewAnalyzer
 from NetUtils import ViewRequestHandler, SocIdGetter

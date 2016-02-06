@@ -6,44 +6,56 @@ import logging
 logging.getLogger()
 
 
-class DatasetAnalyzer(object):
+class ViewAnalyzer(object):
+    """class ViewAnalyzer()
+    Analyzes a list of views and creates a CSV file with the results.
+    """
     def __init__(self):
-        """class DatasetAnalyzer()
-        Analyzes a list of datasets and creates a CSV file with the results.
+        """Initializes a view analyzer.
+        The _generated_headers list contains headers for columns that contain
+        data created by the analyzer. There must be an ordered one-to-one
+        correspondence between this list and the append operations in
+        ViewAnalyzer._analyze_view - see the comments in that function
+        for details.
         """
-        self._datasets = []
+        # TODO: Find a better way to deal with generated headers
+        self._views = []
         self._generated_headers = ["is_current", "report_creation_time"]
+        cur_time = datetime.datetime.now().replace(microsecond=0).isoformat()
+        self._creation_time = cur_time
         self._rows = []
 
-        cur_time = datetime.datetime.now()
-        self._creation_time = cur_time.replace(microsecond=0).isoformat()
-
-    def add_dataset(self, dataset):
-        if dataset['id'] in self._datasets:
-            logging.warn("Dataset already analyzed: %s" % dataset['id'])
+    def add_view(self, view):
+        """Add a view to the analyzer unless it is a duplicate, in which
+        case the event is logged and the view is not added.
+        """
+        if view['id'] in self._views:
+            logging.warn("View already analyzed: %s" % view['id'])
             return
         else:
-            self._rows.extend(self._analyze_dataset(dataset))
-            self._datasets.append(dataset['id'])
+            self._rows.extend(self._analyze_view(view))
+            self._views.append(view['id'])
 
-    def _analyze_dataset(self, dataset):
-        """Analyze a dataset (dict) and return a list of rows.
+    def _analyze_view(self, view):
+        """Analyze a view (dict) and return a list of rows.
         """
         logging.debug("Analyzing %s: %s"
-                      % (dataset['id'], dataset['name']))
+                      % (view['id'], view['name']))
 
         rows = []
-        dataset_info = self._get_dataset_info(dataset)
-        if 'columns' not in dataset.keys():
-            logging.warn("No columns in %s" % dataset['id'])
+        view_info = self._get_view_info(view)
+        if 'columns' not in view.keys():
+            logging.warn("No columns in %s" % view['id'])
             raise KeyError("No Columns")
-        for col in dataset['columns']:
+        for col in view['columns']:
             current_row = []
-            current_row.extend(dataset_info)
+            current_row.extend(view_info)
             current_row.extend(self._get_column_info(col))
-            current_row.append(u"IS_CURRENT")         # placeholder
+            # Generated headers must correspond to the following append calls
+            current_row.append(u"IS_CURRENT")
             current_row.append(self._creation_time)
-            encoded_row = []      # csv module doesn't like unicode
+
+            encoded_row = []  # CSV writer requires unicode
             for item in current_row:
                 if isinstance(item, unicode):
                     item = item.encode('utf-8')
@@ -53,33 +65,33 @@ class DatasetAnalyzer(object):
         return rows
 
     def _analyze_all(self):
-        """Run the analyzer on all datasets and return the results.
+        """Run the analyzer on all views and return the results.
         """
         results = []
-        for item in self._datasets:
+        for item in self._views:
             try:
-                analyzed_content = self._analyze_dataset(item)
+                analyzed_content = self._analyze_view(item)
             except(KeyError):
                 continue
             for row in analyzed_content:
                 results.append(row)
         return results
 
-    def _get_dataset_info(self, dataset):
-        """Returns dataset info (common to all columns) as a list.
+    def _get_view_info(self, view):
+        """Returns view info (common to all columns) as a list.
         """
-        dataset_id = dataset['id']
-        dataset_name = dataset['name']
-        dataset_time = self._get_date_time(dataset)
+        view_id = view['id']
+        view_name = view['name']
+        view_time = self._get_date_time(view)
         try:
-            custom = dataset['metadata']['custom_fields']
-            dataset_dpt = custom['Additional Information']['Department']
-        except(KeyError):
-            dataset_dpt = "null"
-            logging.debug("No department information for dataset %s"
-                          % dataset_id)
+            custom = view['metadata']['custom_fields']
+            view_dpt = custom['Additional Information']['Department']
+        except:
+            view_dpt = "null"
+            logging.debug("No department information for view %s"
+                          % view_id)
 
-        return [dataset_id, dataset_name, dataset_dpt, dataset_time]
+        return [view_id, view_name, view_dpt, view_time]
 
     def _get_column_info(self, col):
         """Returns information about the given column as a list.
@@ -94,30 +106,34 @@ class DatasetAnalyzer(object):
         current_row.append(col['renderTypeName'])
         return current_row
 
-    def _get_date_time(self, dataset):
+    def _get_date_time(self, view):
         """This function fills the snapshot_date_time column.
         """
-        if dataset['createdAt'] == "created_at":
+        if view['createdAt'] == "created_at":
             return "created_at"
         try:
-            epoch_time = float(dataset['createdAt'])
+            epoch_time = float(view['createdAt'])
             date_time = datetime.datetime.utcfromtimestamp(
                 epoch_time).replace(microsecond=0).isoformat()
         except(KeyError):
-            logging.warn("snapshot_time not found for dataset %s"
-                         % dataset['id'])
+            logging.warn("snapshot_time not found for view %s"
+                         % view['id'])
             date_time = "null"
         return date_time
 
     def get_headers(self):
+        """Generate column headers by analyzing a custom view.
+        """
         with open("utilities/headers.json") as headerfile:
-            headstr = headerfile.read()
+            headerset = json.loads(headerfile.read())
             headers = ['id']
-            headers.extend(self._analyze_dataset(json.loads(headstr))[0][:-2])
+            headers.extend(self._analyze_view(headerset)[0][:-2])
             headers.extend(self._generated_headers)
-        return headers
+            return headers
 
     def make_csv(self, filename=None):
+        """Utility function for writing the report to a CSV file.
+        """
         if filename is None:
             print(self.get_headers())
             for number, row in enumerate(self._rows):

@@ -6,21 +6,21 @@ import datetime
 import json
 
 def test_portal_analyzer():
-    datasets = []
+    views = []
     current_time = datetime.datetime.now().replace(microsecond=0).isoformat()
     with open('tests/test_view_resource.json') as data_json:
         json_str = data_json.read()
         data_dict = json.loads(json_str)
         print data_dict
-        datasets = [data_dict]
-        for item in datasets:
+        views = [data_dict]
+        for item in views:
             item['snapshot_time'] = current_time
 
-    analyzer = utilities.DatasetAnalyzer()
+    analyzer = utilities.ViewAnalyzer()
     analyzer._creation_time = 'null' # Avoids timestamp conflict
 
-    for item in datasets:
-        analyzer.add_dataset(item)
+    for item in views:
+        analyzer.add_view(item)
 
     analyzer.make_csv('test_results.csv')
 
