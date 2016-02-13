@@ -2,3 +2,7 @@ output_files/
 online_analyzer.log
 *.pyc
 portal/
+*.log
+*.csv
+venv/
+.DS_Store

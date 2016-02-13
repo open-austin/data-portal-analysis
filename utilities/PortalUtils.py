@@ -25,6 +25,14 @@ class ViewAnalyzer(object):
         self._creation_time = cur_time
         self._rows = []
 
+    @property
+    def creation_time(self):
+        return self._creation_time
+
+    @creation_time.setter
+    def creation_time(self, value):
+        self._creation_time = value
+
     def add_view(self, view):
         """Add a view to the analyzer unless it is a duplicate, in which
         case the event is logged and the view is not added.
