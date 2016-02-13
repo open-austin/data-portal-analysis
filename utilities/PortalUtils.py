@@ -27,10 +27,12 @@ class ViewAnalyzer(object):
 
     @property
     def creation_time(self):
+        """Getter for _creation_time"""
         return self._creation_time
 
     @creation_time.setter
     def creation_time(self, value):
+        """Setter for _creation_time"""
         self._creation_time = value
 
     def add_view(self, view):
