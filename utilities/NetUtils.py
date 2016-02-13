@@ -7,9 +7,16 @@ import datetime
 
 logging.getLogger()
 
-
 class SocIdGetter(object):
+    """class SocIdGetter()
+    Fetches a collection of views from data.austintexas.gov, and populates a collection
+    of view id's and types
+    """
     def __init__(self):
+        """Initializes a Socrata Id Getter.
+        Retrieves view metadata from Socrata, and filters / retrieves tabular data
+        for each view.
+        """
         self._views_url = "http://data.austintexas.gov/api/search/views.json"
         self._migrations_api = "http://data.austintexas.gov/api/migrations/"
         self._view_metadata = self.get_all_view_ids()
@@ -17,6 +24,7 @@ class SocIdGetter(object):
         self.fourby_list = self.filter_tabular_ids(self._tabular_ids)
 
     def get_all_view_ids(self):
+        """Fetches views from Socrata, returns a collection of view metadata."""
         req = requests.get(self._views_url)
         views_response_json = req.json()
         view_metadata = []
@@ -38,6 +46,7 @@ class SocIdGetter(object):
 
     @staticmethod
     def filter_view_ids(view_metadata):
+        """Retrieves tabular data ids from the set of Socrata views."""
         tabular_ids = []
         for i in view_metadata:
             if i[1] == "tabular":
@@ -50,6 +59,9 @@ class SocIdGetter(object):
         return tabular_ids
 
     def filter_tabular_ids(self, tabular_ids):
+        """For each set of tabular data, fetch updated id from Socrata's
+        migrations api.
+        """
         fourby_list = []
         # these will be the "new back end" ids of primary data assets
         for i in tabular_ids:
@@ -68,10 +80,15 @@ class SocIdGetter(object):
 
 
 class ViewRequestHandler(object):
+    """class ViewRequestHandler()
+    Fetches view data given a Socrata id.
+    """
     def __init__(self):
+        """Initializes view request url."""
         self._request_url = "http://data.austintexas.gov/api/views/"
 
     def get_view(self, socrata_id):
+        """Fetches view data for a given socrata_id."""
         request_url = self._request_url + socrata_id + '.json'
         result = requests.get(request_url)
         if result.status_code is 404:

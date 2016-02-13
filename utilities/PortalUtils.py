@@ -113,7 +113,8 @@ class ViewAnalyzer(object):
         current_row.append(col['renderTypeName'])
         return current_row
 
-    def _get_date_time(self, view):
+    @staticmethod
+    def _get_date_time(view):
         """This function fills the snapshot_date_time column.
         """
         if view['createdAt'] == "created_at":
