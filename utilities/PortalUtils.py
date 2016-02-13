@@ -93,7 +93,7 @@ class ViewAnalyzer(object):
         try:
             custom = view['metadata']['custom_fields']
             view_dpt = custom['Additional Information']['Department']
-        except:
+        except(KeyError):
             view_dpt = "null"
             logging.debug("No department information for view {0}".format(view_id.encode('utf8')))
 

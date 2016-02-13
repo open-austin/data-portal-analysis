@@ -11,13 +11,13 @@ import datetime
 def run_online_analysis(outfile):
     """This function runs the online analyzer; it requires internet access.
     """
-    idGetter = utilities.SocIdGetter()
-    soc_ids = idGetter.fourby_list
-    viewRequester = utilities.ViewRequestHandler()
+    id_getter = utilities.SocIdGetter()
+    soc_ids = id_getter.fourby_list
+    view_requester = utilities.ViewRequestHandler()
     analyzer = utilities.ViewAnalyzer()
 
     for fourby in soc_ids:
-        view = viewRequester.get_view(fourby)
+        view = view_requester.get_view(fourby)
         print("Processing {0}".format(fourby))
         if view == "null":
             continue
