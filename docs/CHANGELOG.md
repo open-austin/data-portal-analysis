@@ -1,4 +1,14 @@
+###### Sat Feb 13 09:45:29 CST 2016
+
+### Description
+What were "datasets" are now called "views" in accordance with Socrata's naming conventions.
+
+### Reason for change
+Following Socrata's naming conventions is only reasonable.
+
+
 ###### Sun Dec 20 14:31:57 CST 2015
+
 ### Description
 One script provides an interface to both static and online analysis, rather than having seperate scripts for each.
 
