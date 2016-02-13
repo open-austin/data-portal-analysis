@@ -12,18 +12,15 @@ class SocIdGetter(object):
     Fetches a collection of views from data.austintexas.gov, and populates a collection
     of view id's and types
     """
-    def __init__(self):
+    def __init__(self, views_url, migrations_url):
         """Initializes a Socrata Id Getter.
         Retrieves view metadata from Socrata, and filters / retrieves tabular data
         for each view.
         """
-        self._views_url = "http://data.austintexas.gov/api/search/views.json"
-        self._migrations_api = "http://data.austintexas.gov/api/migrations/"
-        self._view_metadata = self.get_all_view_ids()
-        self._tabular_ids = self.filter_view_ids(self._view_metadata)
-        self.fourby_list = self.filter_tabular_ids(self._tabular_ids)
+        self._views_url = views_url
+        self._migrations_api = migrations_url
 
-    def get_all_view_ids(self):
+    def get_ids(self):
         """Fetches views from Socrata, returns a collection of view metadata."""
         req = requests.get(self._views_url)
         views_response_json = req.json()
@@ -42,16 +39,19 @@ class SocIdGetter(object):
             # these attributes are used later on
             # to filter out stuff we don't want
             view_metadata.append(item)
-        return view_metadata
+
+        tabular_ids = self.filter_view_ids(view_metadata)
+        fourby_list = self.filter_tabular_ids(tabular_ids)
+        return fourby_list
 
     @staticmethod
     def filter_view_ids(view_metadata):
         """Retrieves tabular data ids from the set of Socrata views."""
         tabular_ids = []
-        for i in view_metadata:
-            if i[1] == "tabular":
-                if i[2] == "table":
-                    tabular_ids.append(i[0])
+        for item in view_metadata:
+            if item[1] == "tabular":
+                if item[2] == "table":
+                    tabular_ids.append(item[0])
                 else:
                     continue
             else:
@@ -64,14 +64,14 @@ class SocIdGetter(object):
         """
         fourby_list = []
         # these will be the "new back end" ids of primary data assets
-        for i in tabular_ids:
-            url = self._migrations_api + i
+        for tab_id in tabular_ids:
+            url = self._migrations_api + tab_id
             req = requests.get(url)
             response_json = req.json()
             try:
                 fourby_item = response_json['nbeId']
             except(KeyError):
-                logging.info("{0} is not a primary data asset.".format(i))
+                logging.info("{0} is not a primary data asset.".format(tab_id))
                 print url  # added temporarily for debugging
                 continue
             else:
@@ -83,9 +83,9 @@ class ViewRequestHandler(object):
     """class ViewRequestHandler()
     Fetches view data given a Socrata id.
     """
-    def __init__(self):
+    def __init__(self, view_api_url):
         """Initializes view request url."""
-        self._request_url = "http://data.austintexas.gov/api/views/"
+        self._request_url = view_api_url
 
     def get_view(self, socrata_id):
         """Fetches view data for a given socrata_id."""

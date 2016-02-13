@@ -8,12 +8,16 @@ import logging
 import argparse
 import datetime
 
+views_url = "http://data.austintexas.gov/api/search/views.json"
+migrations_url = "http://data.austintexas.gov/api/migrations/"
+request_url = "http://data.austintexas.gov/api/views/"
+
 def run_online_analysis(outfile):
     """This function runs the online analyzer; it requires internet access.
     """
-    id_getter = utilities.SocIdGetter()
-    soc_ids = id_getter.fourby_list
-    view_requester = utilities.ViewRequestHandler()
+    id_getter = utilities.SocIdGetter(views_url, migrations_url)
+    soc_ids = id_getter.get_ids()
+    view_requester = utilities.ViewRequestHandler(request_url)
     analyzer = utilities.ViewAnalyzer()
 
     for fourby in soc_ids:
