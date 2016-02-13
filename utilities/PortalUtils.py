@@ -38,7 +38,7 @@ class ViewAnalyzer(object):
         case the event is logged and the view is not added.
         """
         if view['id'] in self._views:
-            logging.warn("View already analyzed: %s" % view['id'])
+            logging.warn("View already analyzed: {0}".format(view['id'].encode('utf8')))
             return
         else:
             self._rows.extend(self._analyze_view(view))
@@ -47,13 +47,12 @@ class ViewAnalyzer(object):
     def _analyze_view(self, view):
         """Analyze a view (dict) and return a list of rows.
         """
-        logging.debug("Analyzing %s: %s"
-                      % (view['id'], view['name']))
+        logging.debug("Analyzing {0}: {1}".format(view['id'].encode('utf8'), view['name'].encode('utf8')))
 
         rows = []
         view_info = self._get_view_info(view)
         if 'columns' not in view.keys():
-            logging.warn("No columns in %s" % view['id'])
+            logging.warn("No columns in {0}".format(view['id'].encode('utf8')))
             raise KeyError("No Columns")
         for col in view['columns']:
             current_row = []
@@ -96,8 +95,7 @@ class ViewAnalyzer(object):
             view_dpt = custom['Additional Information']['Department']
         except:
             view_dpt = "null"
-            logging.debug("No department information for view %s"
-                          % view_id)
+            logging.debug("No department information for view {0}".format(view_id.encode('utf8')))
 
         return [view_id, view_name, view_dpt, view_time]
 
@@ -124,8 +122,7 @@ class ViewAnalyzer(object):
             date_time = datetime.datetime.utcfromtimestamp(
                 epoch_time).replace(microsecond=0).isoformat()
         except(KeyError):
-            logging.warn("snapshot_time not found for view %s"
-                         % view['id'])
+            logging.warn("snapshot_time not found for view {0}".format(view['id'].encode('utf8')))
             date_time = "null"
         return date_time
 

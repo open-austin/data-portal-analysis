@@ -58,8 +58,7 @@ class SocIdGetter(object):
             try:
                 fourby_item = response_json['nbeId']
             except(KeyError):
-                logging.info("%s is not a primary data asset."
-                             % i)
+                logging.info("{0} is not a primary data asset.".format(i))
                 print url  # added temporarily for debugging
                 continue
             else:
@@ -75,13 +74,12 @@ class ViewRequestHandler(object):
         request_url = self._request_url + socrata_id + '.json'
         result = requests.get(request_url)
         if result.status_code is 404:
-            logging.critical("404 response from %s" % request_url)
+            logging.critical("404 response from {0}".format(request_url))
             return "null"
         if 'error' in result.json().keys():
-            logging.critical("Error getting data from %s message: %s"
-                             % (request_url, result.json()['message']))
+            logging.critical("Error getting data from {0} message: {1}".format(request_url, result.json()['message']))
             return "null"
-        logging.info("Got data from %s" % request_url)
+        logging.info("Got data from {0}".format(request_url))
 
         dataset = result.json()
         cur_time = datetime.datetime.now().replace(microsecond=0)

@@ -18,7 +18,7 @@ def run_online_analysis(outfile):
 
     for fourby in soc_ids:
         view = viewRequester.get_view(fourby)
-        print("Processing %s" % fourby)
+        print("Processing {0}".format(fourby))
         if view == "null":
             continue
         analyzer.add_view(view)
