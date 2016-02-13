@@ -36,7 +36,8 @@ class SocIdGetter(object):
             view_metadata.append(item)
         return view_metadata
 
-    def filter_view_ids(self, view_metadata):
+    @staticmethod
+    def filter_view_ids(view_metadata):
         tabular_ids = []
         for i in view_metadata:
             if i[1] == "tabular":

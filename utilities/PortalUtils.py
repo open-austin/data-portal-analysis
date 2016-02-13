@@ -99,7 +99,8 @@ class ViewAnalyzer(object):
 
         return [view_id, view_name, view_dpt, view_time]
 
-    def _get_column_info(self, col):
+    @staticmethod
+    def _get_column_info(col):
         """Returns information about the given column as a list.
         """
         current_row = []
