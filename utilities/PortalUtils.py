@@ -25,12 +25,22 @@ class ViewAnalyzer(object):
         self._creation_time = cur_time
         self._rows = []
 
+    @property
+    def creation_time(self):
+        """Getter for _creation_time"""
+        return self._creation_time
+
+    @creation_time.setter
+    def creation_time(self, value):
+        """Setter for _creation_time"""
+        self._creation_time = value
+
     def add_view(self, view):
         """Add a view to the analyzer unless it is a duplicate, in which
         case the event is logged and the view is not added.
         """
         if view['id'] in self._views:
-            logging.warn("View already analyzed: %s" % view['id'])
+            logging.warn("View already analyzed: {0}".format(view['id'].encode('utf8')))
             return
         else:
             self._rows.extend(self._analyze_view(view))
@@ -39,13 +49,12 @@ class ViewAnalyzer(object):
     def _analyze_view(self, view):
         """Analyze a view (dict) and return a list of rows.
         """
-        logging.debug("Analyzing %s: %s"
-                      % (view['id'], view['name']))
+        logging.debug("Analyzing {0}: {1}".format(view['id'].encode('utf8'), view['name'].encode('utf8')))
 
         rows = []
         view_info = self._get_view_info(view)
         if 'columns' not in view.keys():
-            logging.warn("No columns in %s" % view['id'])
+            logging.warn("No columns in {0}".format(view['id'].encode('utf8')))
             raise KeyError("No Columns")
         for col in view['columns']:
             current_row = []
@@ -86,14 +95,14 @@ class ViewAnalyzer(object):
         try:
             custom = view['metadata']['custom_fields']
             view_dpt = custom['Additional Information']['Department']
-        except:
+        except(KeyError):
             view_dpt = "null"
-            logging.debug("No department information for view %s"
-                          % view_id)
+            logging.debug("No department information for view {0}".format(view_id.encode('utf8')))
 
         return [view_id, view_name, view_dpt, view_time]
 
-    def _get_column_info(self, col):
+    @staticmethod
+    def _get_column_info(col):
         """Returns information about the given column as a list.
         """
         current_row = []
@@ -106,7 +115,8 @@ class ViewAnalyzer(object):
         current_row.append(col['renderTypeName'])
         return current_row
 
-    def _get_date_time(self, view):
+    @staticmethod
+    def _get_date_time(view):
         """This function fills the snapshot_date_time column.
         """
         if view['createdAt'] == "created_at":
@@ -116,8 +126,7 @@ class ViewAnalyzer(object):
             date_time = datetime.datetime.utcfromtimestamp(
                 epoch_time).replace(microsecond=0).isoformat()
         except(KeyError):
-            logging.warn("snapshot_time not found for view %s"
-                         % view['id'])
+            logging.warn("snapshot_time not found for view {0}".format(view['id'].encode('utf8')))
             date_time = "null"
         return date_time
 
