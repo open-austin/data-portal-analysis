@@ -17,8 +17,9 @@ def run_online_analysis(outfile, config):
 
     for fourby in soc_ids:
         view = view_requester.get_view(fourby)
-        print("Processing {0}".format(fourby))
+#        print("Processing {0}".format(fourby))
         if view == "null":
+            logging.debug("Null view for socid {0}".format(fourby))
             continue
         analyzer.add_view(view)
 
@@ -33,7 +34,6 @@ def run_static_analysis(datafile, outfile):
     with open(datafile) as data_json:
         json_str = data_json.read()
         data_dict = json.loads(json_str)
-        print data_dict
         views = [data_dict]
         for item in views:
             item['snapshot_time'] = current_time
@@ -52,6 +52,8 @@ if __name__ == "__main__":
     parser.add_argument("output_file", help="Name of CSV file to be created.")
     parser.add_argument("--static",
                         help="Read the views from a static file.")
+    parser.add_argument("--silent",
+                        help="Prevent console messages from being printed.")
     parser.add_argument("-c", "--config",
                         help="Specifies a configuration file to read options from.")
     parser.add_argument("-v", "--verbose",
@@ -67,7 +69,11 @@ if __name__ == "__main__":
         log_level = logging.WARN
     logging.basicConfig(filename=config.log_file, filemode="w",
                         level=log_level)
-
+    if not args.silent:
+        std_logger = logging.StreamHandler()
+        std_logger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
+        logging.getLogger().addHandler(std_logger)
+    
     if args.static:
         run_static_analysis(args.static, args.output_file)
     else:
