@@ -50,15 +50,16 @@ if __name__ == "__main__":
     desc = "ATX data portal analysis script."
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("output_file", help="Name of CSV file to be created.")
-    parser.add_argument("--static",
-                        help="Read the views from a static file.")
     parser.add_argument("--silent",
+                        action="store_true",
                         help="Prevent console messages from being printed.")
-    parser.add_argument("-c", "--config",
-                        help="Specifies a configuration file to read options from.")
     parser.add_argument("-v", "--verbose",
                         action="store_true",
                         help="Increase logfile verbosity to DEBUG")
+    parser.add_argument("-c", "--config",
+                        help="Specifies a configuration file to read options from.")
+    parser.add_argument("--static",
+                        help="Read the views from a static file.")
     args = parser.parse_args()
 
     config = utilities.ConfigHelper(args.config)
@@ -66,12 +67,12 @@ if __name__ == "__main__":
     if args.verbose:
         log_level = logging.DEBUG
     else:
-        log_level = logging.WARN
+        log_level = logging.INFO
     logging.basicConfig(filename=config.log_file, filemode="w",
                         level=log_level)
     if not args.silent:
         std_logger = logging.StreamHandler()
-        std_logger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
+        # std_logger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
         logging.getLogger().addHandler(std_logger)
     
     if args.static:

@@ -20,10 +20,31 @@ class SocIdGetter(object):
         self._views_url = views_url
         self._migrations_api = migrations_url
 
+
+    def _download_views(self):
+        localfile = 'views.json'
+        req = requests.get(self._views_url, stream=True)
+        chunknum = 0
+        logging.info("Downloading {0}".format(self._views_url))
+        with open(localfile, 'wb') as local_f:
+            for chunk in req.iter_content(chunk_size=1024):
+                if chunk:
+                    if(chunknum % 100 == 0):
+                        logging.info("Got chunk {0} of {1}.".format(chunknum, localfile))
+                    local_f.write(chunk)
+                    chunknum += 1
+            logging.info("views.json was downloaded in {0} chunks".format(chunknum))
+        with open(local_f) as view_json:
+            json_str = view_json.read()
+            views_dict = json.loads(json_str)
+        return views_dict
+
+
     def get_ids(self):
         """Fetches views from Socrata, returns a collection of view metadata."""
-        req = requests.get(self._views_url)
-        views_response_json = req.json()
+        # req = requests.get(self._views_url)
+        # views_response_json = req.json()
+        views_response_json = self._download_views().json()
         view_metadata = []
         for view in views_response_json['results']:
             try:
@@ -72,7 +93,6 @@ class SocIdGetter(object):
                 fourby_item = response_json['nbeId']
             except(KeyError):
                 logging.info("{0} is not a primary data asset.".format(tab_id))
-                print url  # added temporarily for debugging
                 continue
             else:
                 fourby_list.append(fourby_item)
