@@ -17,8 +17,9 @@ def run_online_analysis(outfile, config):
 
     for fourby in soc_ids:
         view = view_requester.get_view(fourby)
-        print("Processing {0}".format(fourby))
+        logging.debug("Processing {0}".format(fourby))
         if view == "null":
+            logging.debug("Null view for socid {0}".format(fourby))
             continue
         analyzer.add_view(view)
 
@@ -33,7 +34,6 @@ def run_static_analysis(datafile, outfile):
     with open(datafile) as data_json:
         json_str = data_json.read()
         data_dict = json.loads(json_str)
-        print data_dict
         views = [data_dict]
         for item in views:
             item['snapshot_time'] = current_time
@@ -50,13 +50,16 @@ if __name__ == "__main__":
     desc = "ATX data portal analysis script."
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument("output_file", help="Name of CSV file to be created.")
-    parser.add_argument("--static",
-                        help="Read the views from a static file.")
-    parser.add_argument("-c", "--config",
-                        help="Specifies a configuration file to read options from.")
+    parser.add_argument("--silent",
+                        action="store_true",
+                        help="Prevent console messages from being printed.")
     parser.add_argument("-v", "--verbose",
                         action="store_true",
                         help="Increase logfile verbosity to DEBUG")
+    parser.add_argument("-c", "--config",
+                        help="Specifies a configuration file to read options from.")
+    parser.add_argument("--static",
+                        help="Read the views from a static file.")
     args = parser.parse_args()
 
     config = utilities.ConfigHelper(args.config)
@@ -64,10 +67,13 @@ if __name__ == "__main__":
     if args.verbose:
         log_level = logging.DEBUG
     else:
-        log_level = logging.WARN
+        log_level = logging.INFO
     logging.basicConfig(filename=config.log_file, filemode="w",
                         level=log_level)
-
+    if not args.silent:
+        std_logger = logging.StreamHandler()
+        logging.getLogger().addHandler(std_logger)
+    
     if args.static:
         run_static_analysis(args.static, args.output_file)
     else:
