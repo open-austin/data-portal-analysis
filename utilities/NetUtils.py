@@ -4,6 +4,7 @@
 import requests
 import logging
 import datetime
+import json
 
 logging.getLogger()
 
@@ -22,6 +23,8 @@ class SocIdGetter(object):
 
 
     def _download_views(self):
+        """This function downloads views.json in chunks and informs the user of
+        progress every 100 chunks."""
         localfile = 'views.json'
         req = requests.get(self._views_url, stream=True)
         chunknum = 0
@@ -34,7 +37,7 @@ class SocIdGetter(object):
                     local_f.write(chunk)
                     chunknum += 1
             logging.info("views.json was downloaded in {0} chunks".format(chunknum))
-        with open(local_f) as view_json:
+        with open(localfile) as view_json:
             json_str = view_json.read()
             views_dict = json.loads(json_str)
         return views_dict
@@ -42,11 +45,9 @@ class SocIdGetter(object):
 
     def get_ids(self):
         """Fetches views from Socrata, returns a collection of view metadata."""
-        # req = requests.get(self._views_url)
-        # views_response_json = req.json()
-        views_response_json = self._download_views().json()
+        views_dict = self._download_views()
         view_metadata = []
-        for view in views_response_json['results']:
+        for view in views_dict['results']:
             try:
                 display_type = view['view']['displayType']
             except(KeyError):

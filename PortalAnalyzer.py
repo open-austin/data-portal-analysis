@@ -17,7 +17,7 @@ def run_online_analysis(outfile, config):
 
     for fourby in soc_ids:
         view = view_requester.get_view(fourby)
-#        print("Processing {0}".format(fourby))
+        logging.debug("Processing {0}".format(fourby))
         if view == "null":
             logging.debug("Null view for socid {0}".format(fourby))
             continue
@@ -72,7 +72,6 @@ if __name__ == "__main__":
                         level=log_level)
     if not args.silent:
         std_logger = logging.StreamHandler()
-        # std_logger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
         logging.getLogger().addHandler(std_logger)
     
     if args.static:
