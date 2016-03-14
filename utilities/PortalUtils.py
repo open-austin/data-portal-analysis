@@ -11,7 +11,7 @@ class ViewAnalyzer(object):
     """class ViewAnalyzer()
     Analyzes a list of views and creates a CSV file with the results.
     """
-    def __init__(self):
+    def __init__(self, db_url = "sqlite://"):
         """Initializes a view analyzer.
         The _generated_headers list contains headers for columns that contain
         data created by the analyzer. There must be an ordered one-to-one
@@ -19,6 +19,7 @@ class ViewAnalyzer(object):
         ViewAnalyzer._analyze_view - see the comments in that function
         for details.
         """
+        self._db_url = db_url
         # TODO: Find a better way to deal with generated headers
         self._views = []
         self._generated_headers = ["is_current", "report_creation_time"]
@@ -42,10 +43,8 @@ class ViewAnalyzer(object):
         """
         if view['id'] in self._views:
             logging.warn("View already analyzed: {0}".format(view['id'].encode('utf8')))
-            return
-        else:
-            self._rows.extend(self._analyze_view(view))
-            self._views.append(view['id'])
+        self._rows.extend(self._analyze_view(view))
+        self._views.append(view['id'])
 
     def _analyze_view(self, view):
         """Analyze a view (dict) and return a list of rows.
@@ -110,18 +109,17 @@ class ViewAnalyzer(object):
         self._store_view_to_db(view_record)        
         return view_list
 
-    @staticmethod
-    def _store_view_to_db(record, db_url="sqlite:///portal.db"):
-        with dataset.connect(db_url) as db:
+    def _store_view_to_db(self, record):
+        with dataset.connect(self._db_url) as db:
             table = db.get_table('views', primary_id = 'view_id', primary_type = 'String')
             try:
                 table.insert(record)
             except:
-                current_record = table.find_one(view_id = u'dk48-hv5d')
+                current_record = table.find_one(view_id = record['view_id'])
                 if int(current_record['last_modified']) < int(record['last_modified']):
                     table.update(record, ['view_id'])
                 else:
-                    pass
+                    return
     
     def _get_column_info(self, col, view_id):
         """Returns information about the given column as a list.
@@ -137,8 +135,7 @@ class ViewAnalyzer(object):
         self._store_col_to_db(col, view_id)
         return current_row
     
-    @staticmethod
-    def _store_col_to_db(col, view_id, db_url = "sqlite:///portal.db"):
+    def _store_col_to_db(self, col, view_id):
         record = dict(parent_view_id = view_id,
                       tableColumnId = col['tableColumnId'],
                       position = col['position'],
@@ -148,7 +145,7 @@ class ViewAnalyzer(object):
                       dataTypeName = col['dataTypeName'],
                       renderTypeName = col['renderTypeName'])
         
-        with dataset.connect(db_url) as db:
+        with dataset.connect(self._db_url) as db:
             table = db.get_table('columns', primary_id = 'tableColumnId', primary_type = 'String')
             try:
                 table.insert(record)

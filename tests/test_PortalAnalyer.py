@@ -33,3 +33,5 @@ def test_portal_analyzer():
         expected_str = test_file.read()
 
     assert_equals(results_str, expected_str)
+
+
