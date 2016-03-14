@@ -1,5 +1,6 @@
 import json
 import csv
+import dataset
 import datetime
 import logging
 
@@ -59,7 +60,7 @@ class ViewAnalyzer(object):
         for col in view['columns']:
             current_row = []
             current_row.extend(view_info)
-            current_row.extend(self._get_column_info(col))
+            current_row.extend(self._get_column_info(col, view_info[0]))
             # Generated headers must correspond to the following append calls
             current_row.append(u"IS_CURRENT")
             current_row.append(self._creation_time)
@@ -89,20 +90,40 @@ class ViewAnalyzer(object):
     def _get_view_info(self, view):
         """Returns view info (common to all columns) as a list.
         """
-        view_id = view['id']
-        view_name = view['name']
         view_time = self._get_date_time(view)
+        view_name = view['name']
+        view_id  = view['id']
         try:
             custom = view['metadata']['custom_fields']
-            view_dpt = custom['Additional Information']['Department']
+            department = custom['Additional Information']['Department']
         except(KeyError):
-            view_dpt = "null"
+            department = "null"
             logging.debug("No department information for view {0}".format(view_id.encode('utf8')))
 
-        return [view_id, view_name, view_dpt, view_time]
+        view_list = [view_id, view_name, department, view_time]
+        view_record = dict(view_id = view['id'],
+                           view_name = view['name'],
+                           view_dpt = department,
+                           view_time = view['createdAt'],
+                           last_modified = view['viewLastModified'])
+
+        self._store_view_to_db(view_record)        
+        return view_list
 
     @staticmethod
-    def _get_column_info(col):
+    def _store_view_to_db(record, db_url="sqlite:///portal.db"):
+        with dataset.connect(db_url) as db:
+            table = db.get_table('views', primary_id = 'view_id', primary_type = 'String')
+            try:
+                table.insert(record)
+            except:
+                current_record = table.find_one(view_id = u'dk48-hv5d')
+                if int(current_record['last_modified']) < int(record['last_modified']):
+                    table.update(record, ['view_id'])
+                else:
+                    pass
+    
+    def _get_column_info(self, col, view_id):
         """Returns information about the given column as a list.
         """
         current_row = []
@@ -113,8 +134,28 @@ class ViewAnalyzer(object):
         current_row.append(col['tableColumnId'])
         current_row.append(col['dataTypeName'])
         current_row.append(col['renderTypeName'])
+        self._store_col_to_db(col, view_id)
         return current_row
+    
+    @staticmethod
+    def _store_col_to_db(col, view_id, db_url = "sqlite:///portal.db"):
+        record = dict(parent_view_id = view_id,
+                      tableColumnId = col['tableColumnId'],
+                      position = col['position'],
+                      name = col['name'],
+                      fieldName = col['fieldName'],
+                      col_id = col['id'],
+                      dataTypeName = col['dataTypeName'],
+                      renderTypeName = col['renderTypeName'])
+        
+        with dataset.connect(db_url) as db:
+            table = db.get_table('columns', primary_id = 'tableColumnId', primary_type = 'String')
+            try:
+                table.insert(record)
+            except:
+                table.update(record, ['tableColumnId'])
 
+        
     @staticmethod
     def _get_date_time(view):
         """This function fills the snapshot_date_time column.

@@ -64,6 +64,7 @@ class SocIdGetter(object):
 
         tabular_ids = self.filter_view_ids(view_metadata)
         fourby_list = self.filter_tabular_ids(tabular_ids)
+        self.fourby_list = fourby_list
         return fourby_list
 
     @staticmethod
