@@ -25,7 +25,7 @@ def test_portal_analyzer_with_db():
 
     with open('test_results_db.csv') as results_file:
         results_str = results_file.read()
-    with open('tests/expected_db_out.csv', 'r') as test_file:
+    with open('tests/expected_out.csv', 'r') as test_file:
         expected_str = test_file.read()
 
     assert_equals(results_str, expected_str)
