@@ -13,7 +13,7 @@ def run_online_analysis(outfile, config):
     id_getter = utilities.SocIdGetter(config.views_url, config.migrations_url)
     soc_ids = id_getter.get_ids()
     view_requester = utilities.ViewRequestHandler(config.request_url)
-    analyzer = utilities.ViewAnalyzer()
+    analyzer = utilities.ViewAnalyzer("sqlite:///portal.db")
 
     for fourby in soc_ids:
         view = view_requester.get_view(fourby)
@@ -38,7 +38,7 @@ def run_static_analysis(datafile, outfile):
         for item in views:
             item['snapshot_time'] = current_time
 
-    analyzer = utilities.ViewAnalyzer()
+    analyzer = utilities.ViewAnalyzer("sqlite:///portal.db")
 
     for item in views:
         analyzer.add_view(item)

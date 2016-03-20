@@ -1,5 +1,6 @@
 import json
 import csv
+import dataset
 import datetime
 import logging
 
@@ -10,20 +11,13 @@ class ViewAnalyzer(object):
     """class ViewAnalyzer()
     Analyzes a list of views and creates a CSV file with the results.
     """
-    def __init__(self):
+    def __init__(self, db_url = "sqlite://"):
         """Initializes a view analyzer.
-        The _generated_headers list contains headers for columns that contain
-        data created by the analyzer. There must be an ordered one-to-one
-        correspondence between this list and the append operations in
-        ViewAnalyzer._analyze_view - see the comments in that function
-        for details.
+        db_url is the location of the database, defaults is in-memory (not persistent)
         """
-        # TODO: Find a better way to deal with generated headers
-        self._views = []
-        self._generated_headers = ["is_current", "report_creation_time"]
+        self._db_url = db_url
         cur_time = datetime.datetime.now().replace(microsecond=0).isoformat()
         self._creation_time = cur_time
-        self._rows = []
 
     @property
     def creation_time(self):
@@ -36,85 +30,71 @@ class ViewAnalyzer(object):
         self._creation_time = value
 
     def add_view(self, view):
-        """Add a view to the analyzer unless it is a duplicate, in which
-        case the event is logged and the view is not added.
-        """
-        if view['id'] in self._views:
-            logging.warn("View already analyzed: {0}".format(view['id'].encode('utf8')))
-            return
-        else:
-            self._rows.extend(self._analyze_view(view))
-            self._views.append(view['id'])
-
-    def _analyze_view(self, view):
-        """Analyze a view (dict) and return a list of rows.
+        """Analyze a view (dict) and store results in the database.
         """
         logging.debug("Analyzing {0}: {1}".format(view['id'].encode('utf8'), view['name'].encode('utf8')))
 
-        rows = []
-        view_info = self._get_view_info(view)
+        view_record = self._get_view_record(view)
+        self._store_view_to_db(view_record)
+        
         if 'columns' not in view.keys():
             logging.warn("No columns in {0}".format(view['id'].encode('utf8')))
             raise KeyError("No Columns")
+
         for col in view['columns']:
-            current_row = []
-            current_row.extend(view_info)
-            current_row.extend(self._get_column_info(col))
-            # Generated headers must correspond to the following append calls
-            current_row.append(u"IS_CURRENT")
-            current_row.append(self._creation_time)
+            col_record = self._get_col_record(col)
+            self._store_col_to_db(col_record, view['id'])
+            self._store_unnormalized(view_record, col_record)
 
-            encoded_row = []  # CSV writer requires unicode
-            for item in current_row:
-                if isinstance(item, unicode):
-                    item = item.encode('utf-8')
-                encoded_row.append(item)
-
-            rows.append(encoded_row)
-        return rows
-
-    def _analyze_all(self):
-        """Run the analyzer on all views and return the results.
-        """
-        results = []
-        for item in self._views:
-            try:
-                analyzed_content = self._analyze_view(item)
-            except(KeyError):
-                continue
-            for row in analyzed_content:
-                results.append(row)
-        return results
-
-    def _get_view_info(self, view):
+    def _get_view_record(self, view):
         """Returns view info (common to all columns) as a list.
         """
-        view_id = view['id']
-        view_name = view['name']
-        view_time = self._get_date_time(view)
         try:
             custom = view['metadata']['custom_fields']
-            view_dpt = custom['Additional Information']['Department']
+            department = custom['Additional Information']['Department']
         except(KeyError):
-            view_dpt = "null"
-            logging.debug("No department information for view {0}".format(view_id.encode('utf8')))
+            department = "null"
+            logging.debug("No department information for view {0}".format(view['id'].encode('utf8')))
 
-        return [view_id, view_name, view_dpt, view_time]
+        view_record = dict(view_id = view['id'],
+                           view_name = view['name'],
+                           view_dpt = department,
+                           view_time = view['createdAt'],
+                           last_modified = view['viewLastModified'])
 
-    @staticmethod
-    def _get_column_info(col):
-        """Returns information about the given column as a list.
-        """
-        current_row = []
-        current_row.append(col['position'])
-        current_row.append(col['name'])
-        current_row.append(col['fieldName'])
-        current_row.append(col['id'])
-        current_row.append(col['tableColumnId'])
-        current_row.append(col['dataTypeName'])
-        current_row.append(col['renderTypeName'])
-        return current_row
+        return view_record
 
+    def _get_col_record(self, col):
+        record = dict(tableColumnId = col['tableColumnId'],
+                      position = col['position'],
+                      name = col['name'],
+                      fieldName = col['fieldName'],
+                      col_id = col['id'],
+                      dataTypeName = col['dataTypeName'],
+                      renderTypeName = col['renderTypeName'])
+        return record
+
+    def _store_view_to_db(self, record):
+        with dataset.connect(self._db_url) as db:
+            table = db.get_table('views', primary_id = 'view_id', primary_type = 'String')
+            try:
+                table.insert(record)
+            except:
+                current_record = table.find_one(view_id = record['view_id'])
+                if int(current_record['last_modified']) < int(record['last_modified']):
+                    table.update(record, ['view_id'])
+                else:
+                    return
+    
+    def _store_col_to_db(self, col_record, view_id):
+        with dataset.connect(self._db_url) as db:
+            table = db.get_table('columns', primary_id = 'tableColumnId', primary_type = 'String')
+            try:
+                table.insert(col_record)
+            except:
+                table.update(col_record, ['tableColumnId'])
+
+        
     @staticmethod
     def _get_date_time(view):
         """This function fills the snapshot_date_time column.
@@ -130,27 +110,20 @@ class ViewAnalyzer(object):
             date_time = "null"
         return date_time
 
-    def get_headers(self):
-        """Generate column headers by analyzing a custom view.
-        """
-        with open("utilities/headers.json") as headerfile:
-            headerset = json.loads(headerfile.read())
-            headers = ['id']
-            headers.extend(self._analyze_view(headerset)[0][:-2])
-            headers.extend(self._generated_headers)
-            return headers
-
-    def make_csv(self, filename=None):
+    def _store_unnormalized(self, *records):
+        merged_record = {}
+        for record in records:
+            merged_record.update(record)
+        # merged_record['creation_time'] = self._creation_time
+        with dataset.connect(self._db_url) as db:
+            table = db.get_table('unnormalized', primary_id = 'col_id', primary_type = 'Integer')
+            table.upsert(merged_record, ['col_id'])
+            
+    def make_csv(self, csv_filename=None):
         """Utility function for writing the report to a CSV file.
         """
-        if filename is None:
-            print(self.get_headers())
-            for number, row in enumerate(self._rows):
-                print([number+1]+row)
-            return
-        with open(filename, "wb") as outfile:
-            writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL)
-            writer.writerow(self.get_headers())
-            for number, row in enumerate(self._rows):
-                writer.writerow([number+1]+row)
-        return
+        with dataset.connect(self._db_url) as db:
+            table = db['unnormalized'].all()
+            dataset.freeze(table, format='csv', filename=csv_filename)
+
+
