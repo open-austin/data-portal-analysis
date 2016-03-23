@@ -14,14 +14,14 @@ app = Flask(__name__, template_folder=working_dir)
 def index():
     with dataset.connect(database_url, row_type=dict) as db:
         table = db.get_table('views')
-    view_list = table.find(_limit=10, order_by='-created_at')
+    view_list = table.find(_limit=10, order_by='-last_modified')
     return render_template('static/index.html', view_list=view_list)
 
 @app.route('/<offset>')
 def offset_index(offset = 0):
     with dataset.connect(database_url, row_type=dict) as db:
         table = db.get_table('views')
-    view_list = table.find(_limit=10, _offset = offset, order_by='-created_at')
+    view_list = table.find(_limit=10, _offset = offset, order_by='-last_modified')
     return render_template('static/index.html', view_list=view_list)
 
 
