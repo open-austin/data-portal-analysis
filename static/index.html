@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="static/sodashop_pro.css" rel="stylesheet" type="text/css">
+    <title>sodashop</title>
+    <meta name="description" content="SODAshop Main Page">
+  </head>
+  <body>
+   <div class="wide" style="background-image: url('/static/banner.png');">
+    <div class="container">
+     <div class="row">
+      <div class="col-md-12 text-center header-title" style="padding:50px;">
+	<h1>What's New on data.austintexas.gov?</h1>
+        {{ number_of_views }}
+	 <br>
+       </div>
+     </div>
+    </div>
+   </div>
+{% for view in view_list %}
+   <div class="container">
+     <div class="row">
+       <div class="panel panel-primary">
+         <div class="panel-heading">
+           <h3 class="panel-title">{{ view.view_name }}</h3>
+         </div>
+         <div class="panel-body">
+           <ul class="list-group">
+             <li class="list-group-item">{{ view.view_id }}</li>
+             <li class="list-group-item">{{ view.created_at }}</li>
+             <li class="list-group-item">{{ view.view_name }}</li>
+             <li class="list-group-item">{{ view.last_modified }}</li>
+           </ul>
+         </div>
+       </div>
+       <a href="http://data.austintexas.gov/views/{{view.view_id}}">http://data.austintexas.gov/views/{{view.view_id}}</a>
+     </div>
+   </div>
+{% endfor %}
+  </body>
+</html>
