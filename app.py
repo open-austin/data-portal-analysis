@@ -16,8 +16,14 @@ def offset_index(offset = 0):
     with dataset.connect(database_url, row_type=dict) as db:
         table = db.get_table('views')
     view_list = table.find(_limit=10, _offset = offset, order_by='-last_modified')
-
-    return render_template('static/index.html', view_list=view_list)
+    modified_view_list = []
+    for view in view_list:
+        modified_view = view
+        converted_time = datetime.datetime.utcfromtimestamp(float(view['last_modified'])).isoformat()
+        modified_view['last_modified'] = converted_time
+        modified_view_list.append(modified_view)
+    next_offset = int(offset)+10
+    return render_template('static/index.html', next_offset=str(next_offset),view_list=modified_view_list)
 
 # def index():
 #     with dataset.connect(database_url, row_type=dict) as db:
