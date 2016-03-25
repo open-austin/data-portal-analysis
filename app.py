@@ -10,6 +10,9 @@ database_url = "sqlite:///" + database_location
 
 app = Flask(__name__, template_folder=working_dir)
 
+def convert_time(timestamp):
+    return datetime.datetime.utcfromtimestamp(float(timestamp)).isoformat()
+
 @app.route('/')
 @app.route('/<offset>')
 def offset_index(offset = 0):
@@ -19,11 +22,16 @@ def offset_index(offset = 0):
     modified_view_list = []
     for view in view_list:
         modified_view = view
-        converted_time = datetime.datetime.utcfromtimestamp(float(view['last_modified'])).isoformat()
-        modified_view['last_modified'] = converted_time
+        modified_view['last_modified'] = convert_time(view['last_modified'])
+        modified_view['view_time'] = convert_time(view['view_time'])
         modified_view_list.append(modified_view)
-    next_offset = int(offset)+10
-    return render_template('static/index.html', next_offset=str(next_offset),view_list=modified_view_list)
+    next_offset = str(int(offset)+10)
+    previous_offset = str(int(offset)-10)
+    if int(offset) <= 10:
+        previous_offset = '0'
+    if int(offset) == 0:
+        previous_offset = None
+    return render_template('static/index.html', previous_offset = previous_offset, next_offset=next_offset,view_list=modified_view_list)
 
 # def index():
 #     with dataset.connect(database_url, row_type=dict) as db:

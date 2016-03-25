@@ -50,17 +50,36 @@ class ViewAnalyzer(object):
         """Returns view info (common to all columns) as a list.
         """
         try:
+            description = view['description']
+        except(KeyError):
+            description = 'No description'
+            logging.debug("No description for view {0}".format(view['id'].encode('utf8')))
+        try:
+            attrib = view['attribution']
+        except(KeyError):
+            attrib = "No attribution"
+            logging.debug("No attribution for view {0}".format(view['id'].encode('utf8')))
+        try:
+            category = view['category']
+        except(KeyError):
+            category = "No category"
+            logging.debug("No category for view {0}".format(view['id'].encode('utf8')))
+        try:
             custom = view['metadata']['custom_fields']
             department = custom['Additional Information']['Department']
         except(KeyError):
-            department = "null"
+            department = "No department"
             logging.debug("No department information for view {0}".format(view['id'].encode('utf8')))
+            
 
         view_record = dict(view_id = view['id'],
                            view_name = view['name'],
                            view_dpt = department,
                            view_time = view['createdAt'],
-                           last_modified = view['viewLastModified'])
+                           last_modified = view['viewLastModified'],
+                           view_attrib = attrib,
+                           view_description = description,
+                           view_category = category)
 
         return view_record
 

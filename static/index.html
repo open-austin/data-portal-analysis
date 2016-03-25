@@ -21,7 +21,16 @@
      </div>
     </div>
    </div>
-   <a href="/{{next_offset}}">Next Page</a>
+   <nav>
+     <ul class="pager">
+       {% if previous_offset %}
+       <li class="previous"><a href="/{{ previous_offset }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+       {% endif %}
+       {% if next_offset %}
+       <li class="next"><a href="/{{ next_offset }}"><span aria-hidden="true">&rarr;</span> Next</a></li>
+       {% endif %}       
+     </ul>
+   </nav>
 {% for view in view_list %}
    <div class="container">
      <div class="row">
@@ -30,11 +39,32 @@
            <h2 class="panel-title">{{ view.view_name }}</h2>
          </div>
          <div class="panel-body">
+	   <div class="section">
+	     <div class="dropdown">
+	     <button class="btn btn-default dropdown-toggle" type="button" id="descriptionDropdown{{ view.view_id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	       Click for description
+	       <span class="caret"></span>
+	     </button>
+	     <ul class="dropdown-menu" aria-labelledby="descriptionDropdown{{ view.view_id }}">
+	       <li>{{ view.view_description }} </li>
+	     </ul>
+	     </div>
+	   </div>
            <table class="table">
              <tbody>
                <tr>
-                 <td><b>Department</b></td>
-                 <td>{{ view.view_dpt }}</td>
+                 <td><b>Attribution</b></td>
+                 <td>{{ view.view_attrib }}</td>
+               </tr>
+               <tr>
+               <!-- <tr> -->
+               <!--   <td><b>Description</b></td> -->
+               <!--   <td>{{ view.view_description }}</td> -->
+               <!-- </tr> -->
+               <tr>
+               <tr>
+                 <td><b>Category</b></td>
+                 <td>{{ view.view_category }}</td>
                </tr>
                <tr>
                <tr>
