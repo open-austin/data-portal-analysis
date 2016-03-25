@@ -52,6 +52,10 @@
            <table class="table">
              <tbody>
                <tr>
+                  <td><b>Department</b></td>
+                  <td>{{ view.view_dpt }}</td>
+               </tr>
+               <tr>
                  <td><b>Attribution</b></td>
                  <td>{{ view.view_attrib }}</td>
                </tr>
@@ -80,9 +84,9 @@
                  <td>{{ view.last_modified }}</td>
                </tr>
                <tr>
-                 <td><b>API Endpoint</b></td>
-                 <td><a href="http://data.austintexas.gov/views/{{view.view_id}}">
-               http://data.austintexas.gov/views/{{view.view_id}}</a></td>
+                 <td><b>Link</b></td>
+                 <td><a href="http://data.austintexas.gov/dataset/{{view.view_id}}">
+               http://data.austintexas.gov/dataset/{{view.view_id}}</a></td>
                </tr>
              </tbody>
            </table>
