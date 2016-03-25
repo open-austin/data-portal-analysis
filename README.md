@@ -1,3 +1,7 @@
+NOTE: This is the sodashop branch. Sodashop is a web app plugin/extension to the data portal analysis project that will allow visitors to quickly see what's new on the portal.
+
+Sodashop currently consists of a single website, but an API and twiter bots are in the works
+
 # Data Portal Analysis
 
 There's a lot of content on the City of Austin's open data portal. This project is about studying that content so we can make the portal better. 
