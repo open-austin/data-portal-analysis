@@ -39,17 +39,6 @@
            <h2 class="panel-title">{{ view.view_name }}</h2>
          </div>
          <div class="panel-body">
-	   <div class="section">
-	     <div class="dropdown">
-	     <button class="btn btn-default dropdown-toggle" type="button" id="descriptionDropdown{{ view.view_id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	       Click for description
-	       <span class="caret"></span>
-	     </button>
-	     <ul class="dropdown-menu" aria-labelledby="descriptionDropdown{{ view.view_id }}">
-	       <li>{{ view.view_description }} </li>
-	     </ul>
-	     </div>
-	   </div>
            <table class="table">
              <tbody>
                <tr>
@@ -57,16 +46,17 @@
                  <td>{{ view.view_attrib }}</td>
                </tr>
                <tr>
-               <!-- <tr> -->
-               <!--   <td><b>Description</b></td> -->
-               <!--   <td>{{ view.view_description }}</td> -->
-               <!-- </tr> -->
-               <tr>
+                 <td><b>Description:</b></td>
+                 <td>
+                   <a data-toggle="modal"
+                         href="#description{{ view.view_id }}">
+                       Click for description</a>
+                 </td>
+               </tr>
                <tr>
                  <td><b>Category</b></td>
                  <td>{{ view.view_category }}</td>
                </tr>
-               <tr>
                <tr>
                  <td><b>Socrata ID</b></td>
                  <td>{{ view.view_id }}</td>
@@ -86,6 +76,22 @@
                </tr>
              </tbody>
            </table>
+           <div class="modal fade" id="description{{ view.view_id }}">
+               <div class="modal-dialog">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h4 class="modal-title">{{ view.view_name }}</h4>
+                       </div>
+                       <div class="modal-body">
+                           <p>{{ view.view_description }}</p>
+                       </div>
+                       <div class="modal-footer">
+                           <a class="btn btn-default" data-dismiss="modal">Close</a>
+                       </div>
+                   </div>
+               </div>
+           </div>
          </div>
        </div>
      </div>
