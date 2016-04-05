@@ -65,23 +65,21 @@ class SocIdGetter(object):
 
         migrated_ids = [self._migrate_id(obe_id) for obe_id in id_list]
         migrated_ids = [soc_id for soc_id in migrated_ids if soc_id is not None]
-        return id_list
+        return migrated_ids
 
     def _migrate_id(self, obe_id):
         """For each set of tabular data, fetch updated id from Socrata's
         migrations api.
         """
-        print "migrating {0}".format(obe_id)
         url = self._migrations_api + obe_id
         req = requests.get(url)
         response_json = req.json()
         try:
             nbe_id = response_json['nbeId']
+            return nbe_id
         except(KeyError):
             logging.info("{0} is not a primary data asset.".format(obe_id))
-            nbe_id = 'null'
-        else:
-            return nbe_id
+            return None
 
 
 class ViewRequestHandler(object):

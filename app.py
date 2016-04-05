@@ -18,7 +18,7 @@ def convert_time(timestamp):
 def offset_index(offset = 0):
     with dataset.connect(database_url, row_type=dict) as db:
         table = db.get_table('views')
-    view_list = table.find(_limit=10, _offset = offset, order_by='-last_modified')
+    view_list = table.find(_limit=10, _offset = offset, order_by='-view_time')
     modified_view_list = []
     for view in view_list:
         modified_view = view
@@ -41,4 +41,4 @@ def offset_index(offset = 0):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
