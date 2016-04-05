@@ -97,5 +97,15 @@
      </div>
    </div>
 {% endfor %}
+   <nav>
+     <ul class="pager">
+       {% if previous_offset %}
+       <li class="previous"><a href="/{{ previous_offset }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+       {% endif %}
+       {% if next_offset %}
+       <li class="next"><a href="/{{ next_offset }}"><span aria-hidden="true">&rarr;</span> Next</a></li>
+       {% endif %}       
+     </ul>
+   </nav>
   </body>
 </html>
