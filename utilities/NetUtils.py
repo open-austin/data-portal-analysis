@@ -22,47 +22,20 @@ class SocIdGetter(object):
         self._migrations_api = migrations_url
 
 
-    def _download_views(self):
-        """This function downloads views.json in chunks and informs the user of
-        progress every 100 chunks."""
-        localfile = 'views.json'
-        req = requests.get(self._views_url, stream=True)
-        chunknum = 0
-        logging.info("Downloading {0}".format(self._views_url))
-        with open(localfile, 'wb') as local_f:
-            for chunk in req.iter_content(chunk_size=1024):
-                if chunk:
-                    if(chunknum % 100 == 0):
-                        logging.info("Got chunk {0} of {1}.".format(chunknum, localfile))
-                    local_f.write(chunk)
-                    chunknum += 1
-            logging.info("views.json was downloaded in {0} chunks".format(chunknum))
-        with open(localfile) as view_json:
-            json_str = view_json.read()
-            views_dict = json.loads(json_str)
-        return views_dict
-
-
-    def get_ids(self, viewfile=False):
+    def get_ids(self, viewfile=False, limit=None):
         """Fetches views from Socrata, returns a list of 4x4 socrata ids."""
-        if viewfile:
-            with open('views.json') as viewjson:
-                views_dict = json.loads(viewjson.read())
+        catalog_url = "http://api.us.socrata.com/api/catalog/v1"
+        if limit is None:
+            response = requests.get(catalog_url + "?domains=data.austintexas.gov&only=datasets&limit=1")
+            result_size = response.json()['resultSetSize']
         else:
-            views_dict = self._download_views()
-
+            result_size = limit
         id_list = []
-        for view in views_dict['results']:
-            try:
-                display_type = view['view']['displayType']
-            except(KeyError):
-                # this means the the view represents a data_lens page,
-                # so we ignore it
-                continue
-            if view['view']['viewType'] == "tabular":
-                if view['view']['displayType'] == "table":
-                    id_list.append(view['view']['id'])
-
+        for start_number in range(0, result_size, 500):
+            response = requests.get(catalog_url + "?domains=data.austintexas.gov&only=datasets&limit=500&offset=" + str(start_number))
+            for result in response.json()['results']:
+                id_list.append(result['resource']['id'])
+                
         migrated_ids = [self._migrate_id(obe_id) for obe_id in id_list]
         migrated_ids = [soc_id for soc_id in migrated_ids if soc_id is not None]
         return migrated_ids
